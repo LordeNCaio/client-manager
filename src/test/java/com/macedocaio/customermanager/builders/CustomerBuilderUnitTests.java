@@ -1,6 +1,6 @@
 package com.macedocaio.customermanager.builders;
 
-import com.macedocaio.customermanager.entities.Customer;
+import com.macedocaio.customermanager.entities.CustomerEntity;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ public class CustomerBuilderUnitTests {
     @Test
     @Order(2)
     public void shouldBuildEmptyCustomer() {
-        Customer customer = CustomerBuilder.getBuilder().build();
+        CustomerEntity customer = CustomerBuilder.getBuilder().build();
         assertNotNull(customer, "Customer instance is null!");
     }
 
@@ -45,7 +45,7 @@ public class CustomerBuilderUnitTests {
     public void shouldBuildCustomerWithId() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withId(id);
-        Customer customer = builder.build();
+        CustomerEntity customer = builder.build();
 
         assertNotNull(customer, "Customer instance is null!");
         assertNotNull(customer.getId(), "Customer Id instance is null!");
@@ -57,7 +57,7 @@ public class CustomerBuilderUnitTests {
     public void shouldBuildCustomerWithResourceId() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withResourceId(resourceId);
-        Customer customer = builder.build();
+        CustomerEntity customer = builder.build();
 
         assertNotNull(customer, "Customer instance is null!");
         assertNotNull(customer.getResourceId(), "Customer ResourceId instance is null!");
@@ -69,7 +69,7 @@ public class CustomerBuilderUnitTests {
     public void shouldBuildCustomerWithUsername() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withUsername(username);
-        Customer customer = builder.build();
+        CustomerEntity customer = builder.build();
 
         assertNotNull(customer, "Customer instance is null!");
         assertNotNull(customer.getUsername(), "Customer Username instance is null!");
@@ -81,7 +81,7 @@ public class CustomerBuilderUnitTests {
     public void shouldBuildCustomerWithFirstname() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withFirstname(firstname);
-        Customer customer = builder.build();
+        CustomerEntity customer = builder.build();
 
         assertNotNull(customer, "Customer instance is null!");
         assertNotNull(customer.getFirstname(), "Customer Firstname instance is null!");
@@ -93,7 +93,7 @@ public class CustomerBuilderUnitTests {
     public void shouldBuildCustomerWithLastname() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withLastname(lastname);
-        Customer customer = builder.build();
+        CustomerEntity customer = builder.build();
 
         assertNotNull(customer, "Customer instance is null!");
         assertNotNull(customer.getLastname(), "Customer Lastname instance is null!");
@@ -105,7 +105,7 @@ public class CustomerBuilderUnitTests {
     public void shouldBuildCustomerWithBirthday() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withBirthday(birthday);
-        Customer customer = builder.build();
+        CustomerEntity customer = builder.build();
 
         assertNotNull(customer, "Customer instance is null!");
         assertNotNull(customer.getBirthday(), "Customer Birthday instance is null!");
@@ -117,7 +117,7 @@ public class CustomerBuilderUnitTests {
     public void shouldBuildCustomerWithCpf() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withCpf(cpf);
-        Customer customer = builder.build();
+        CustomerEntity customer = builder.build();
 
         assertNotNull(customer, "Customer instance is null!");
         assertNotNull(customer.getCpf(), "Customer Cpf instance is null!");
@@ -135,7 +135,7 @@ public class CustomerBuilderUnitTests {
                 .withLastname(lastname)
                 .withBirthday(birthday)
                 .withCpf(cpf);
-        Customer customer = builder.build();
+        CustomerEntity customer = builder.build();
 
         assertNotNull(customer, "Customer instance is null!");
         assertEquals(customer.getId(), id, "Customer Id is not equal to " + id);

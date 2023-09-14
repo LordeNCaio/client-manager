@@ -1,24 +1,24 @@
 package com.macedocaio.customermanager.builders;
 
-import com.macedocaio.customermanager.entities.Customer;
+import com.macedocaio.customermanager.entities.CustomerEntity;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 /**
  * @author caiom
- * Classe utilizada para a construção de entidade do {@link Customer}
+ * Classe utilizada para a construção de entidade do {@link CustomerEntity}
  * com parametros customizados
  */
 public class CustomerBuilder {
 
     /**
-     * Entidade {@link Customer} que será retornada pela função {@link #build()}
+     * Entidade {@link CustomerEntity} que será retornada pela função {@link #build()}
      */
-    private final Customer customer;
+    private final CustomerEntity customer;
 
     private CustomerBuilder() {
-        customer = new Customer();
+        customer = new CustomerEntity();
     }
 
     public static CustomerBuilder getBuilder() {
@@ -26,9 +26,9 @@ public class CustomerBuilder {
     }
 
     /**
-     * Aplica um novo valor para a {@link Customer#getId()} da entidade
+     * Aplica um novo valor para a {@link CustomerEntity#getId()} da entidade
      *
-     * @param id Valor que será atribuído para o campo 'id' utilizando {@link Customer#setId(Long)}
+     * @param id Valor que será atribuído para o campo 'id' utilizando {@link CustomerEntity#setId(Long)}
      *           da entidade {@link #customer} instanciada pelo construtor.
      * @return O próprio {@link CustomerBuilder}
      */
@@ -38,10 +38,10 @@ public class CustomerBuilder {
     }
 
     /**
-     * Aplica um novo valor para a {@link Customer#getResourceId()} da entidade
+     * Aplica um novo valor para a {@link CustomerEntity#getResourceId()} da entidade
      *
      * @param resourceId Valor que será atribuído para o campo 'resourceId' utilizando
-     *                   {@link Customer#setResourceId(UUID)} da entidade {@link #customer} instanciada pelo construtor.
+     *                   {@link CustomerEntity#setResourceId(UUID)} da entidade {@link #customer} instanciada pelo construtor.
      * @return O próprio {@link CustomerBuilder}
      */
     public CustomerBuilder withResourceId(UUID resourceId) {
@@ -50,10 +50,10 @@ public class CustomerBuilder {
     }
 
     /**
-     * Aplica um novo valor para a {@link Customer#getUsername()} da entidade
+     * Aplica um novo valor para a {@link CustomerEntity#getUsername()} da entidade
      *
      * @param username Valor que será atribuído para o campo 'username' utilizando
-     *                 {@link Customer#setUsername(String)} da entidade {@link #customer} instanciada pelo construtor.
+     *                 {@link CustomerEntity#setUsername(String)} da entidade {@link #customer} instanciada pelo construtor.
      * @return O próprio {@link CustomerBuilder}
      */
     public CustomerBuilder withUsername(String username) {
@@ -62,10 +62,10 @@ public class CustomerBuilder {
     }
 
     /**
-     * Aplica um novo valor para a {@link Customer#getFirstname()} da entidade
+     * Aplica um novo valor para a {@link CustomerEntity#getFirstname()} da entidade
      *
      * @param firstname Valor que será atribuído para o campo 'firstname' utilizando
-     *                  {@link Customer#setFirstname(String)} da entidade {@link #customer} instanciada pelo construtor.
+     *                  {@link CustomerEntity#setFirstname(String)} da entidade {@link #customer} instanciada pelo construtor.
      * @return O próprio {@link CustomerBuilder}
      */
     public CustomerBuilder withFirstname(String firstname) {
@@ -74,10 +74,10 @@ public class CustomerBuilder {
     }
 
     /**
-     * Aplica um novo valor para a {@link Customer#getLastname()} da entidade
+     * Aplica um novo valor para a {@link CustomerEntity#getLastname()} da entidade
      *
      * @param lastname Valor que será atribuído para o campo 'lastname' utilizando
-     *                 {@link Customer#setLastname(String)} da entidade {@link #customer} instanciada pelo construtor.
+     *                 {@link CustomerEntity#setLastname(String)} da entidade {@link #customer} instanciada pelo construtor.
      * @return O próprio {@link CustomerBuilder}
      */
     public CustomerBuilder withLastname(String lastname) {
@@ -86,10 +86,10 @@ public class CustomerBuilder {
     }
 
     /**
-     * Aplica um novo valor para a {@link Customer#getBirthday()} da entidade
+     * Aplica um novo valor para a {@link CustomerEntity#getBirthday()} da entidade
      *
      * @param birthday Valor que será atribuído para o campo 'birthday' utilizando
-     *                 {@link Customer#setBirthday(LocalDate)} da entidade {@link #customer} instanciada pelo
+     *                 {@link CustomerEntity#setBirthday(LocalDate)} da entidade {@link #customer} instanciada pelo
      *                 construtor.
      * @return O próprio {@link CustomerBuilder}
      */
@@ -99,10 +99,10 @@ public class CustomerBuilder {
     }
 
     /**
-     * Aplica um novo valor para a {@link Customer#getCpf()} da entidade
+     * Aplica um novo valor para a {@link CustomerEntity#getCpf()} da entidade
      *
      * @param cpf Valor que será atribuído para o campo 'cpf' utilizando
-     *            {@link Customer#setCpf(String)} da entidade {@link #customer} instanciada pelo construtor.
+     *            {@link CustomerEntity#setCpf(String)} da entidade {@link #customer} instanciada pelo construtor.
      * @return O próprio {@link CustomerBuilder}
      */
     public CustomerBuilder withCpf(String cpf) {
@@ -111,12 +111,12 @@ public class CustomerBuilder {
     }
 
     /**
-     * Constrói o objeto do tipo {@link Customer}
+     * Constrói o objeto do tipo {@link CustomerEntity}
      *
      * @return Entidade {@link #customer} instanciada pelo construtor do builder
      * com os parâmetros passados pelas funções do builder
      */
-    public Customer build() {
+    public CustomerEntity build() {
         return customer;
     }
 }
