@@ -1,23 +1,23 @@
 package com.macedocaio.customermanager.exceptions.customer;
 
-import com.macedocaio.customermanager.entities.Customer;
+import com.macedocaio.customermanager.entities.CustomerEntity;
 
 import java.util.UUID;
 
 /**
  * @author caiom
- * Exceção que será lançada caso não seja encontrado nenhum {@link Customer}
+ * Exceção que será lançada caso não seja encontrado nenhum {@link CustomerEntity}
  */
 public class CustomerNotFoundException extends CustomerException {
 
     /**
-     * {@link UUID} utilizado na busca do {@link Customer}
+     * {@link UUID} utilizado na busca do {@link CustomerEntity}
      */
     private final UUID resourceId;
 
     /**
      * Overload do construtor padrão para receber {@link UUID}
-     * @param resourceId utilizado na busca do {@link Customer}
+     * @param resourceId utilizado na busca do {@link CustomerEntity}
      */
     public CustomerNotFoundException(UUID resourceId) {
         super(null);

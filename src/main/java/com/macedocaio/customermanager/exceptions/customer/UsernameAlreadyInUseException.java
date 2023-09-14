@@ -1,6 +1,6 @@
 package com.macedocaio.customermanager.exceptions.customer;
 
-import com.macedocaio.customermanager.entities.Customer;
+import com.macedocaio.customermanager.entities.CustomerEntity;
 
 /**
  * @author caiom
@@ -11,7 +11,7 @@ public class UsernameAlreadyInUseException extends CustomerException {
     /**
      * {@inheritDoc}
      */
-    public UsernameAlreadyInUseException(Customer customer) {
+    public UsernameAlreadyInUseException(CustomerEntity customer) {
         super(customer);
     }
 
