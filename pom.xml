@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.macedocaio</groupId>
-    <artifactId>ClientManager</artifactId>
+    <artifactId>CustomerManager</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>client-manager</name>
-    <description>client-manager</description>
+    <name>customer-manager</name>
+    <description>customer-manager</description>
 
     <properties>
         <java.version>11</java.version>
