@@ -2,6 +2,7 @@ package com.macedocaio.clientmanager.services;
 
 import com.macedocaio.clientmanager.entities.Customer;
 import com.macedocaio.clientmanager.exceptions.customer.CpfAlreadyInUseException;
+import com.macedocaio.clientmanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.clientmanager.exceptions.customer.UsernameAlreadyInUseException;
 import com.macedocaio.clientmanager.repositories.CustomerRepository;
 import com.macedocaio.clientmanager.utils.CustomerUtils;
@@ -53,7 +54,7 @@ public class CustomerServiceUnitTests {
     @Test
     @Order(2)
     public void shouldFindByResourceId() {
-        when(repository.findByResourceId(Mockito.any(UUID.class))).thenReturn(customer);
+        when(repository.findByResourceId(Mockito.any(UUID.class))).thenReturn(ofNullable(customer));
         Customer found = service.findByResourceId(resourceId);
 
         assertNotNull(found);
@@ -63,7 +64,7 @@ public class CustomerServiceUnitTests {
     @Test
     @Order(3)
     public void shouldUpdateByResourceId() {
-        when(repository.findByResourceId(Mockito.any(UUID.class))).thenReturn(customer);
+        when(repository.findByResourceId(Mockito.any(UUID.class))).thenReturn(ofNullable(customer));
 
         Customer found = service.findByResourceId(resourceId);
         found.setFirstname("Johnny");
@@ -77,7 +78,7 @@ public class CustomerServiceUnitTests {
     @Test
     @Order(4)
     public void shouldDeleteByResourceId() {
-        when(repository.findByResourceId(Mockito.any(UUID.class))).thenReturn(customer);
+        when(repository.findByResourceId(Mockito.any(UUID.class))).thenReturn(ofNullable(customer));
 
         Customer found = service.findByResourceId(resourceId);
 
@@ -107,5 +108,38 @@ public class CustomerServiceUnitTests {
                 () -> service.createSingle(customer));
 
         assertEquals(CpfAlreadyInUseException.class, throwable.getClass());
+    }
+
+    @Test
+    @Order(7)
+    public void shouldThrowCustomerNotFoundExceptionOnFindByResourceId() {
+        when(repository.findByResourceId(any(UUID.class))).thenReturn(empty());
+
+        Throwable throwable = assertThrowsExactly(CustomerNotFoundException.class,
+                () -> service.findByResourceId(resourceId));
+
+        assertEquals(CustomerNotFoundException.class, throwable.getClass());
+    }
+
+    @Test
+    @Order(8)
+    public void shouldThrowCustomerNotFoundExceptionOnUpdateByResourceId() {
+        when(repository.findByResourceId(any(UUID.class))).thenReturn(empty());
+
+        Throwable throwable = assertThrowsExactly(CustomerNotFoundException.class,
+                () -> service.updateByResourceId(resourceId, customer));
+
+        assertEquals(CustomerNotFoundException.class, throwable.getClass());
+    }
+
+    @Test
+    @Order(9)
+    public void shouldThrowCustomerNotFoundExceptionOnDeleteByResourceId() {
+        when(repository.findByResourceId(any(UUID.class))).thenReturn(empty());
+
+        Throwable throwable = assertThrowsExactly(CustomerNotFoundException.class,
+                () -> service.deleteByResourceId(resourceId));
+
+        assertEquals(CustomerNotFoundException.class, throwable.getClass());
     }
 }

@@ -2,6 +2,7 @@ package com.macedocaio.clientmanager.services;
 
 import com.macedocaio.clientmanager.entities.Customer;
 import com.macedocaio.clientmanager.exceptions.customer.CpfAlreadyInUseException;
+import com.macedocaio.clientmanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.clientmanager.exceptions.customer.UsernameAlreadyInUseException;
 import com.macedocaio.clientmanager.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -19,37 +20,49 @@ public class CustomerService {
     }
 
     public Customer createSingle(Customer customer) {
-        Optional<Customer> optionalCustomer = repository.findByUsername(customer.getUsername());
-        optionalCustomer.ifPresent(value -> {
-            throw new UsernameAlreadyInUseException(value);
-        });
-
-        optionalCustomer = repository.findByCpf(customer.getCpf());
-        optionalCustomer.ifPresent(value -> {
-            throw new CpfAlreadyInUseException(value);
-        });
-
+        isValidUsername(customer);
+        isValidCpf(customer);
         return repository.save(customer);
     }
 
     public Customer findByResourceId(UUID resourceId) {
-        return repository.findByResourceId(resourceId);
+        Optional<Customer> optionalCustomer = repository.findByResourceId(resourceId);
+        if (optionalCustomer.isEmpty()) {
+            throw  new CustomerNotFoundException(resourceId);
+        }
+
+        return optionalCustomer.get();
     }
 
     public void updateByResourceId(UUID resourceId, Customer customer) {
-        Customer searched = repository.findByResourceId(resourceId);
-        if (searched == null) {
-            throw new RuntimeException("Customer doesn't exists!");
+        Optional<Customer> optionalCustomer = repository.findByResourceId(resourceId);
+        if (optionalCustomer.isEmpty()) {
+            throw  new CustomerNotFoundException(resourceId);
         }
 
         repository.updateByResourceId(resourceId, customer);
     }
 
     public void deleteByResourceId(UUID resourceId) {
-        Customer searched = repository.findByResourceId(resourceId);
-        if (searched == null) {
-            throw new RuntimeException("Customer doesn't exists!");
+        Optional<Customer> optionalCustomer = repository.findByResourceId(resourceId);
+        if (optionalCustomer.isEmpty()) {
+            throw  new CustomerNotFoundException(resourceId);
         }
+
         repository.deleteByResourceId(resourceId);
+    }
+
+    private void isValidUsername(Customer customer) {
+        Optional<Customer> optionalCustomer = repository.findByUsername(customer.getUsername());
+        optionalCustomer.ifPresent(value -> {
+            throw new UsernameAlreadyInUseException(value);
+        });
+    }
+
+    private void isValidCpf(Customer customer) {
+        Optional<Customer> optionalCustomer = repository.findByCpf(customer.getCpf());
+        optionalCustomer.ifPresent(value -> {
+            throw new CpfAlreadyInUseException(value);
+        });
     }
 }

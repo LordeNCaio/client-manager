@@ -13,9 +13,10 @@ import java.util.UUID;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    Customer findByResourceId(UUID resourceId);
+    Optional<Customer> findByResourceId(UUID resourceId);
 
     Optional<Customer> findByUsername(String username);
+
     Optional<Customer> findByCpf(String cpf);
 
     void deleteByResourceId(UUID resourceId);
