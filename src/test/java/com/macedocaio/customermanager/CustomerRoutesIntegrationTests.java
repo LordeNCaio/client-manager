@@ -5,6 +5,7 @@ import com.macedocaio.customermanager.controllers.CustomerController;
 import com.macedocaio.customermanager.entities.Customer;
 import com.macedocaio.customermanager.exceptions.ErrorMessage;
 import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseException;
+import com.macedocaio.customermanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.customermanager.exceptions.customer.UsernameAlreadyInUseException;
 import com.macedocaio.customermanager.utils.CustomerUtils;
 import org.junit.jupiter.api.*;
@@ -93,10 +94,7 @@ public class CustomerRoutesIntegrationTests {
     @Test
     @Order(4)
     public void shouldFindSingleResourceId() throws Exception {
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
-                .get(String.format("%s/%s", CustomerController.BASE_URL, resourceId))
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding(StandardCharsets.UTF_8);
+        MockHttpServletRequestBuilder builder = getFindSingleByResourceId(resourceId);
 
         MvcResult result = mvc.perform(builder)
                 .andExpect(status().is(HttpStatus.FOUND.value()))
@@ -114,11 +112,7 @@ public class CustomerRoutesIntegrationTests {
         customer.setFirstname("Johnny");
         customer.setLastname("Knoxville");
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
-                .put(String.format("%s/%s", CustomerController.BASE_URL, resourceId))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(mapper.writeValueAsString(customer))
-                .characterEncoding(StandardCharsets.UTF_8);
+        MockHttpServletRequestBuilder builder = getUpdateSingleByResourceId(resourceId);
 
         mvc.perform(builder)
                 .andExpect(status().is(HttpStatus.ACCEPTED.value()))
@@ -126,12 +120,60 @@ public class CustomerRoutesIntegrationTests {
     }
 
     @Test
+    @Order(6)
+    public void shouldReturnCustomerNotFoundOnFindSingleResourceId() throws Exception {
+        UUID localResourceId = UUID.randomUUID();
+        CustomerNotFoundException exception = new CustomerNotFoundException(localResourceId);
+
+        MockHttpServletRequestBuilder builder = getFindSingleByResourceId(localResourceId);
+
+        MvcResult result = mvc.perform(builder)
+                .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+
+        ErrorMessage errorMessage = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
+        assertEquals(errorMessage.getMessage(), exception.getMessage());
+    }
+
+    @Test
+    @Order(7)
+    public void shouldReturnCustomerNotFoundOnUpdateSingleResourceId() throws Exception {
+        UUID localResourceId = UUID.randomUUID();
+        CustomerNotFoundException exception = new CustomerNotFoundException(localResourceId);
+
+        MockHttpServletRequestBuilder builder = getUpdateSingleByResourceId(localResourceId);
+
+        MvcResult result = mvc.perform(builder)
+                .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+
+        ErrorMessage errorMessage = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
+        assertEquals(errorMessage.getMessage(), exception.getMessage());
+    }
+
+    @Test
+    @Order(7)
+    public void shouldReturnCustomerNotFoundOnDeleteSingleResourceId() throws Exception {
+        UUID localResourceId = UUID.randomUUID();
+        CustomerNotFoundException exception = new CustomerNotFoundException(localResourceId);
+
+        MockHttpServletRequestBuilder builder = getDeleteSingleByResourceId(localResourceId);
+
+        MvcResult result = mvc.perform(builder)
+                .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+
+        ErrorMessage errorMessage = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
+        assertEquals(errorMessage.getMessage(), exception.getMessage());
+    }
+
+    @Test
     @Order(100)
     public void shouldDeleteSingleResourceId() throws Exception {
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
-                .delete(String.format("%s/%s", CustomerController.BASE_URL, resourceId))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .characterEncoding(StandardCharsets.UTF_8);
+        MockHttpServletRequestBuilder builder = getDeleteSingleByResourceId(resourceId);
 
         mvc.perform(builder)
                 .andExpect(status().is(HttpStatus.ACCEPTED.value()))
@@ -144,5 +186,27 @@ public class CustomerRoutesIntegrationTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8)
                 .content(mapper.writeValueAsBytes(customer));
+    }
+
+    private MockHttpServletRequestBuilder getFindSingleByResourceId(UUID resourceId) {
+        return MockMvcRequestBuilders
+                .get(String.format("%s/%s", CustomerController.BASE_URL, resourceId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8);
+    }
+
+    private MockHttpServletRequestBuilder getUpdateSingleByResourceId(UUID resourceId) throws Exception {
+        return MockMvcRequestBuilders
+                .put(String.format("%s/%s", CustomerController.BASE_URL, resourceId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(mapper.writeValueAsString(customer))
+                .characterEncoding(StandardCharsets.UTF_8);
+    }
+
+    private MockHttpServletRequestBuilder getDeleteSingleByResourceId(UUID resourceId) {
+        return MockMvcRequestBuilders
+                .delete(String.format("%s/%s", CustomerController.BASE_URL, resourceId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .characterEncoding(StandardCharsets.UTF_8);
     }
 }
