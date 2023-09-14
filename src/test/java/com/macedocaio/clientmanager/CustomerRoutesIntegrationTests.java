@@ -3,6 +3,9 @@ package com.macedocaio.clientmanager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.macedocaio.clientmanager.controllers.CustomerController;
 import com.macedocaio.clientmanager.entities.Customer;
+import com.macedocaio.clientmanager.exceptions.ErrorMessage;
+import com.macedocaio.clientmanager.exceptions.customer.CpfAlreadyInUseException;
+import com.macedocaio.clientmanager.exceptions.customer.UsernameAlreadyInUseException;
 import com.macedocaio.clientmanager.utils.CustomerUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,7 +48,7 @@ public class CustomerRoutesIntegrationTests {
     @Test
     @Order(1)
     public void shouldCallCreateSingleRoute() throws Exception {
-        MockHttpServletRequestBuilder builder = getCreateSingleRoute();
+        MockHttpServletRequestBuilder builder = getCreateSingleRoute(customer);
 
         mvc.perform(builder)
                 .andExpect(status().is(HttpStatus.CREATED.value()))
@@ -53,6 +57,41 @@ public class CustomerRoutesIntegrationTests {
 
     @Test
     @Order(2)
+    public void shouldReturnUsernameAlreadyInUseOnSingleRoute() throws Exception {
+        UsernameAlreadyInUseException exception = new UsernameAlreadyInUseException(customer);
+
+        MockHttpServletRequestBuilder builder = getCreateSingleRoute(customer);
+
+        MvcResult result = mvc.perform(builder)
+                .andExpect(status().is(HttpStatus.CONFLICT.value()))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+
+        ErrorMessage errorMessage = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
+        assertEquals(errorMessage.getMessage(), exception.getMessage());
+    }
+
+    @Test
+    @Order(3)
+    public void shouldReturnCpfAlreadyInUseOnSingleRoute() throws Exception {
+        CpfAlreadyInUseException exception = new CpfAlreadyInUseException(customer);
+
+        Customer localCustomer = CustomerUtils.createJohnDoe();
+        localCustomer.setUsername("littlejohn002");
+
+        MockHttpServletRequestBuilder builder = getCreateSingleRoute(localCustomer);
+
+        MvcResult result = mvc.perform(builder)
+                .andExpect(status().is(HttpStatus.CONFLICT.value()))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+
+        ErrorMessage errorMessage = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
+        assertEquals(errorMessage.getMessage(), exception.getMessage());
+    }
+
+    @Test
+    @Order(4)
     public void shouldFindSingleResourceId() throws Exception {
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
                 .get(String.format("%s/%s", CustomerController.BASE_URL, resourceId))
@@ -69,7 +108,7 @@ public class CustomerRoutesIntegrationTests {
     }
 
     @Test
-    @Order(3)
+    @Order(5)
     public void shouldUpdateSingleResourceId() throws Exception {
         Customer customer = CustomerUtils.createJohnDoe();
         customer.setFirstname("Johnny");
@@ -87,7 +126,7 @@ public class CustomerRoutesIntegrationTests {
     }
 
     @Test
-    @Order(4)
+    @Order(100)
     public void shouldDeleteSingleResourceId() throws Exception {
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
                 .delete(String.format("%s/%s", CustomerController.BASE_URL, resourceId))
@@ -99,7 +138,7 @@ public class CustomerRoutesIntegrationTests {
                 .andReturn();
     }
 
-    private MockHttpServletRequestBuilder getCreateSingleRoute() throws Exception {
+    private MockHttpServletRequestBuilder getCreateSingleRoute(Customer customer) throws Exception {
         return MockMvcRequestBuilders
                 .post(CustomerController.BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
