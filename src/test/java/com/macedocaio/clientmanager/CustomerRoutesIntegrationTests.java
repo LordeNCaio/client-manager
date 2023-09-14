@@ -1,9 +1,9 @@
 package com.macedocaio.clientmanager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.macedocaio.clientmanager.builders.CustomerBuilder;
 import com.macedocaio.clientmanager.controllers.CustomerController;
 import com.macedocaio.clientmanager.entities.Customer;
+import com.macedocaio.clientmanager.utils.CustomerUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,18 +37,14 @@ public class CustomerRoutesIntegrationTests {
 
     @BeforeAll
     public static void beforeAll() {
-        resourceId = UUID.randomUUID();
-        customer = createNewCustomer();
+        customer = CustomerUtils.createJohnDoe();
+        resourceId = customer.getResourceId();
     }
 
     @Test
     @Order(1)
     public void shouldCallCreateSingleRoute() throws Exception {
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders
-                .post(CustomerController.BASE_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding(StandardCharsets.UTF_8)
-                .content(mapper.writeValueAsBytes(customer));
+        MockHttpServletRequestBuilder builder = getCreateSingleRoute();
 
         mvc.perform(builder)
                 .andExpect(status().is(HttpStatus.CREATED.value()))
@@ -76,7 +71,7 @@ public class CustomerRoutesIntegrationTests {
     @Test
     @Order(3)
     public void shouldUpdateSingleResourceId() throws Exception {
-        Customer customer = createNewCustomer();
+        Customer customer = CustomerUtils.createJohnDoe();
         customer.setFirstname("Johnny");
         customer.setLastname("Knoxville");
 
@@ -104,13 +99,11 @@ public class CustomerRoutesIntegrationTests {
                 .andReturn();
     }
 
-    private static Customer createNewCustomer() {
-        return CustomerBuilder.getBuilder()
-                .withId(1L)
-                .withResourceId(resourceId)
-                .withFirstname("John")
-                .withLastname("Doe")
-                .withBirthday(LocalDate.of(2001, 1, 1))
-                .build();
+    private MockHttpServletRequestBuilder getCreateSingleRoute() throws Exception {
+        return MockMvcRequestBuilders
+                .post(CustomerController.BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8)
+                .content(mapper.writeValueAsBytes(customer));
     }
 }

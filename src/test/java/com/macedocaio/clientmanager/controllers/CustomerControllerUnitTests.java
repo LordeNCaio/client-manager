@@ -1,8 +1,8 @@
 package com.macedocaio.clientmanager.controllers;
 
-import com.macedocaio.clientmanager.builders.CustomerBuilder;
 import com.macedocaio.clientmanager.entities.Customer;
 import com.macedocaio.clientmanager.services.CustomerService;
+import com.macedocaio.clientmanager.utils.CustomerUtils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,8 +32,8 @@ public class CustomerControllerUnitTests {
 
     @BeforeAll
     public static void beforeAll() {
-        resourceId = UUID.randomUUID();
-        customer = createNewCustomer();
+        customer = CustomerUtils.createJohnDoe();
+        resourceId = customer.getResourceId();
     }
 
     @Test
@@ -60,7 +59,7 @@ public class CustomerControllerUnitTests {
     @Test
     @Order(3)
     public void shouldUpdateByResourceId() {
-        when(service.findByResourceId(Mockito.any(UUID.class))).thenReturn(createNewCustomer());
+        when(service.findByResourceId(Mockito.any(UUID.class))).thenReturn(customer);
 
         Customer found = controller.findByResourceId(resourceId);
         found.setFirstname("Johnny");
@@ -81,15 +80,5 @@ public class CustomerControllerUnitTests {
         controller.deleteByResourceId(found.getResourceId());
 
         verify(controller, times(1)).deleteByResourceId(found.getResourceId());
-    }
-
-    private static Customer createNewCustomer() {
-        return CustomerBuilder.getBuilder()
-                .withId(1L)
-                .withResourceId(UUID.randomUUID())
-                .withFirstname("John")
-                .withLastname("Doe")
-                .withBirthday(LocalDate.of(2001, 1, 1))
-                .build();
     }
 }

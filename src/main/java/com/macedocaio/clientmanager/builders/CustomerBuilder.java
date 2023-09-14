@@ -26,6 +26,11 @@ public class CustomerBuilder {
         return this;
     }
 
+    public CustomerBuilder withUsername(String username) {
+        customer.setUsername(username);
+        return this;
+    }
+
     public CustomerBuilder withFirstname(String firstname) {
         customer.setFirstname(firstname);
         return this;
@@ -38,6 +43,11 @@ public class CustomerBuilder {
 
     public CustomerBuilder withBirthday(LocalDate birthday) {
         customer.setBirthday(birthday);
+        return this;
+    }
+
+    public CustomerBuilder withCpf(String cpf) {
+        customer.setCpf(cpf);
         return this;
     }
 

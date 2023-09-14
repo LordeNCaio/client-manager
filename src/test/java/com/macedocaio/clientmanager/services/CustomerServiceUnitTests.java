@@ -1,8 +1,10 @@
 package com.macedocaio.clientmanager.services;
 
-import com.macedocaio.clientmanager.builders.CustomerBuilder;
 import com.macedocaio.clientmanager.entities.Customer;
+import com.macedocaio.clientmanager.exceptions.customer.CpfAlreadyInUseException;
+import com.macedocaio.clientmanager.exceptions.customer.UsernameAlreadyInUseException;
 import com.macedocaio.clientmanager.repositories.CustomerRepository;
+import com.macedocaio.clientmanager.utils.CustomerUtils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,9 +13,10 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -33,8 +36,8 @@ public class CustomerServiceUnitTests {
 
     @BeforeAll
     public static void beforeAll() {
-        resourceId = UUID.randomUUID();
-        customer = createNewCustomer();
+        customer = CustomerUtils.createJohnDoe();
+        resourceId = customer.getResourceId();
     }
 
     @Test
@@ -60,7 +63,7 @@ public class CustomerServiceUnitTests {
     @Test
     @Order(3)
     public void shouldUpdateByResourceId() {
-        when(repository.findByResourceId(Mockito.any(UUID.class))).thenReturn(createNewCustomer());
+        when(repository.findByResourceId(Mockito.any(UUID.class))).thenReturn(customer);
 
         Customer found = service.findByResourceId(resourceId);
         found.setFirstname("Johnny");
@@ -83,13 +86,26 @@ public class CustomerServiceUnitTests {
         verify(service, times(1)).deleteByResourceId(found.getResourceId());
     }
 
-    private static Customer createNewCustomer() {
-        return CustomerBuilder.getBuilder()
-                .withId(1L)
-                .withResourceId(UUID.randomUUID())
-                .withFirstname("John")
-                .withLastname("Doe")
-                .withBirthday(LocalDate.of(2001, 1, 1))
-                .build();
+    @Test
+    @Order(5)
+    public void shouldThrowUsernameAlreadyInUseExceptionOnCreateSingle() {
+        when(repository.findByUsername(any(String.class))).thenReturn(ofNullable(customer));
+
+        Throwable throwable = assertThrowsExactly(UsernameAlreadyInUseException.class,
+                () -> service.createSingle(customer));
+
+        assertEquals(UsernameAlreadyInUseException.class, throwable.getClass());
+    }
+
+    @Test
+    @Order(6)
+    public void shouldThrowCpfAlreadyInUseExceptionOnCreateSingle() {
+        when(repository.findByUsername(any(String.class))).thenReturn(empty());
+        when(repository.findByCpf(any(String.class))).thenReturn(ofNullable(customer));
+
+        Throwable throwable = assertThrowsExactly(CpfAlreadyInUseException.class,
+                () -> service.createSingle(customer));
+
+        assertEquals(CpfAlreadyInUseException.class, throwable.getClass());
     }
 }

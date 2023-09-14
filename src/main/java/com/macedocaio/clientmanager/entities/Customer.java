@@ -16,6 +16,9 @@ public class Customer {
     @Column(nullable = false, unique = true, columnDefinition = "UUID")
     private UUID resourceId = UUID.randomUUID();
 
+    @Column(nullable = false, unique = true)
+    private String username;
+
     @Column(nullable = false)
     private String firstname;
 
@@ -25,15 +28,10 @@ public class Customer {
     @Column(nullable = false)
     private LocalDate birthday;
 
-    public Customer() {
-    }
+    @Column(nullable = false, unique = true)
+    private String cpf;
 
-    public Customer(Long id, UUID resourceId, String firstname, String lastname, LocalDate birthday) {
-        this.id = id;
-        this.resourceId = resourceId;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.birthday = birthday;
+    public Customer() {
     }
 
     public Long getId() {
@@ -50,6 +48,14 @@ public class Customer {
 
     public void setResourceId(UUID resourceId) {
         this.resourceId = resourceId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstname() {
@@ -76,6 +82,14 @@ public class Customer {
         this.birthday = birthday;
     }
 
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,13 +98,15 @@ public class Customer {
         Customer customer = (Customer) o;
 
         if (!id.equals(customer.id)) return false;
-        return resourceId.equals(customer.resourceId);
+        if (!resourceId.equals(customer.resourceId)) return false;
+        return cpf.equals(customer.cpf);
     }
 
     @Override
     public int hashCode() {
         int result = id.hashCode();
         result = 31 * result + resourceId.hashCode();
+        result = 31 * result + cpf.hashCode();
         return result;
     }
 
@@ -99,9 +115,11 @@ public class Customer {
         return "Customer{" +
                 "id=" + id +
                 ", resourceId=" + resourceId +
+                ", username='" + username + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", birthday=" + birthday +
+                ", cpf='" + cpf + '\'' +
                 '}';
     }
 }

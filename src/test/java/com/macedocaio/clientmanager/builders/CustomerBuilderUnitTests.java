@@ -20,9 +20,7 @@ public class CustomerBuilderUnitTests {
     @Test
     @Order(1)
     public void shouldGetBuilderInstance() {
-        CustomerBuilder builder = null;
-        builder = CustomerBuilder.getBuilder();
-
+        CustomerBuilder builder = CustomerBuilder.getBuilder();
         assertNotNull(builder, "Instância do Builder está nula!");
     }
 
@@ -52,16 +50,20 @@ public class CustomerBuilderUnitTests {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withId(1L)
                 .withResourceId(UUID.randomUUID())
+                .withUsername("clarotv10")
                 .withFirstname("Claro")
                 .withLastname("TV")
-                .withBirthday(LocalDate.of(2008, 12, 16));
+                .withBirthday(LocalDate.of(2008, 12, 16))
+                .withCpf("326.735.038-70");
         Customer customer = builder.build();
 
         assertNotNull(customer);
         assertNotNull(customer.getId());
         assertNotNull(customer.getResourceId());
+        assertNotNull(customer.getUsername());
         assertNotNull(customer.getFirstname());
         assertNotNull(customer.getLastname());
         assertNotNull(customer.getBirthday());
+        assertNotNull(customer.getCpf());
     }
 }
