@@ -1,5 +1,6 @@
 package com.macedocaio.customermanager.exceptions.handler;
 
+import com.macedocaio.customermanager.controllers.CustomerController;
 import com.macedocaio.customermanager.exceptions.ErrorMessage;
 import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseException;
 import com.macedocaio.customermanager.exceptions.customer.CustomerNotFoundException;
@@ -9,6 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * @author caiom
+ * Classe responsavel pelo tratamento das execeções lançadas nas rotas do {@link CustomerController}
+ */
 @RestControllerAdvice
 public class CustomerExceptionHandler {
 

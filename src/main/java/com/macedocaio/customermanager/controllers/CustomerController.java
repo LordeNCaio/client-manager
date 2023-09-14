@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+/**
+ * @author caiom
+ * Classe responsavel pela disponibilização de rotas
+ */
 @RestController
 @RequestMapping(CustomerController.BASE_URL)
 public class CustomerController {
