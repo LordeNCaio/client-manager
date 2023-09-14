@@ -1,13 +1,15 @@
 package com.macedocaio.customermanager.services;
 
 
-import com.macedocaio.customermanager.entities.Customer;
+import com.macedocaio.customermanager.dto.customer.UpdateCustomerDto;
+import com.macedocaio.customermanager.entities.CustomerEntity;
 import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseException;
 import com.macedocaio.customermanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.customermanager.exceptions.customer.UsernameAlreadyInUseException;
 import com.macedocaio.customermanager.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,26 +31,26 @@ public class CustomerService {
     }
 
     /**
-     * Cria um novo registo do tipo {@link Customer} no banco de dados
+     * Cria um novo registo do tipo {@link CustomerEntity} no banco de dados
      *
      * @param customer que será inserido no banco de dados
      * @return entidade persistida no banco de dados
      */
-    public Customer createSingle(Customer customer) {
+    public CustomerEntity createSingle(CustomerEntity customer) {
         isValidUsername(customer);
         isValidCpf(customer);
         return repository.save(customer);
     }
 
     /**
-     * Busca um registo do tipo {@link Customer} no banco de dados utilizando o 'resourceId'
+     * Busca um registo do tipo {@link CustomerEntity} no banco de dados utilizando o 'resourceId'
      *
-     * @param resourceId que será utilizado para encontrar o {@link Customer}
-     * @return um objeto do tipo {@link Customer}
-     * @throws CustomerNotFoundException caso não seja encontrado um {@link Customer}
+     * @param resourceId que será utilizado para encontrar o {@link CustomerEntity}
+     * @return um objeto do tipo {@link CustomerEntity}
+     * @throws CustomerNotFoundException caso não seja encontrado um {@link CustomerEntity}
      */
-    public Customer findByResourceId(UUID resourceId) throws CustomerNotFoundException {
-        Optional<Customer> optionalCustomer = repository.findByResourceId(resourceId);
+    public CustomerEntity findByResourceId(UUID resourceId) throws CustomerNotFoundException {
+        Optional<CustomerEntity> optionalCustomer = repository.findByResourceId(resourceId);
         if (optionalCustomer.isEmpty()) {
             throw new CustomerNotFoundException(resourceId);
         }
@@ -57,14 +59,22 @@ public class CustomerService {
     }
 
     /**
-     * Atualiza um registo do tipo {@link Customer} no banco de dados utilizando o 'resourceId'
-     *
-     * @param resourceId que será utilizado para encontrar o {@link Customer}
-     * @param customer   contendo as alterações para serem salvas
-     * @throws CustomerNotFoundException caso não seja encontrado um {@link Customer}
+     * Retorna todos os objetos do tipo {@link CustomerEntity}
+     * @return {@link List<CustomerEntity>}
      */
-    public void updateByResourceId(UUID resourceId, Customer customer) throws CustomerNotFoundException {
-        Optional<Customer> optionalCustomer = repository.findByResourceId(resourceId);
+    public List<CustomerEntity> findAll() {
+        return repository.findAll();
+    }
+
+    /**
+     * Atualiza um registo do tipo {@link CustomerEntity} no banco de dados utilizando o 'resourceId'
+     *
+     * @param resourceId que será utilizado para encontrar o {@link CustomerEntity}
+     * @param customer   contendo as alterações para serem salvas
+     * @throws CustomerNotFoundException caso não seja encontrado um {@link CustomerEntity}
+     */
+    public void updateByResourceId(UUID resourceId, UpdateCustomerDto customer) throws CustomerNotFoundException {
+        Optional<CustomerEntity> optionalCustomer = repository.findByResourceId(resourceId);
         if (optionalCustomer.isEmpty()) {
             throw new CustomerNotFoundException(resourceId);
         }
@@ -73,13 +83,13 @@ public class CustomerService {
     }
 
     /**
-     * Deleta um registo do tipo {@link Customer} no banco de dados utilizando o 'resourceId'
+     * Deleta um registo do tipo {@link CustomerEntity} no banco de dados utilizando o 'resourceId'
      *
-     * @param resourceId que será utilizado para encontrar o {@link Customer}
-     * @throws CustomerNotFoundException caso não seja encontrado um {@link Customer}
+     * @param resourceId que será utilizado para encontrar o {@link CustomerEntity}
+     * @throws CustomerNotFoundException caso não seja encontrado um {@link CustomerEntity}
      */
     public void deleteByResourceId(UUID resourceId) throws CustomerNotFoundException {
-        Optional<Customer> optionalCustomer = repository.findByResourceId(resourceId);
+        Optional<CustomerEntity> optionalCustomer = repository.findByResourceId(resourceId);
         if (optionalCustomer.isEmpty()) {
             throw new CustomerNotFoundException(resourceId);
         }
@@ -88,26 +98,26 @@ public class CustomerService {
     }
 
     /**
-     * Verifica se {@link Customer#getUsername()} já existe no banco de dados
+     * Verifica se {@link CustomerEntity#getUsername()} já existe no banco de dados
      *
-     * @param customer que será buscado pelo {@link Customer#getUsername()}
+     * @param customer que será buscado pelo {@link CustomerEntity#getUsername()}
      * @throws UsernameAlreadyInUseException caso 'username' já esteja em uso.
      */
-    private void isValidUsername(Customer customer) throws UsernameAlreadyInUseException {
-        Optional<Customer> optionalCustomer = repository.findByUsername(customer.getUsername());
+    private void isValidUsername(CustomerEntity customer) throws UsernameAlreadyInUseException {
+        Optional<CustomerEntity> optionalCustomer = repository.findByUsername(customer.getUsername());
         optionalCustomer.ifPresent(value -> {
             throw new UsernameAlreadyInUseException(value);
         });
     }
 
     /**
-     * Verifica se {@link Customer#getCpf()} já existe no banco de dados
+     * Verifica se {@link CustomerEntity#getCpf()} já existe no banco de dados
      *
-     * @param customer que será buscado pelo {@link Customer#getCpf()}
+     * @param customer que será buscado pelo {@link CustomerEntity#getCpf()}
      * @throws CpfAlreadyInUseException caso 'cpf' já esteja em uso.
      */
-    private void isValidCpf(Customer customer) throws CpfAlreadyInUseException {
-        Optional<Customer> optionalCustomer = repository.findByCpf(customer.getCpf());
+    private void isValidCpf(CustomerEntity customer) throws CpfAlreadyInUseException {
+        Optional<CustomerEntity> optionalCustomer = repository.findByCpf(customer.getCpf());
         optionalCustomer.ifPresent(value -> {
             throw new CpfAlreadyInUseException(value);
         });

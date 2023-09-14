@@ -1,12 +1,17 @@
 package com.macedocaio.customermanager.controllers;
 
-import com.macedocaio.customermanager.entities.Customer;
+import com.macedocaio.customermanager.dto.converters.CustomerConverter;
+import com.macedocaio.customermanager.dto.customer.PublicCustomerDto;
+import com.macedocaio.customermanager.dto.customer.UpdateCustomerDto;
+import com.macedocaio.customermanager.entities.CustomerEntity;
 import com.macedocaio.customermanager.services.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -26,20 +31,29 @@ public class CustomerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Customer createSingle(@RequestBody Customer customer) {
-        return service.createSingle(customer);
+    public PublicCustomerDto createSingle(@Valid @RequestBody CustomerEntity customer) {
+        CustomerEntity saved = service.createSingle(customer);
+        return CustomerConverter.convertFromTo(saved, PublicCustomerDto.class);
     }
 
     @GetMapping(value = "/{resourceId}", headers = {HttpHeaders.CONTENT_TYPE})
     @ResponseStatus(HttpStatus.FOUND)
-    public Customer findByResourceId(@PathVariable UUID resourceId) {
-        return service.findByResourceId(resourceId);
+    public PublicCustomerDto findByResourceId(@PathVariable UUID resourceId) {
+        CustomerEntity found = service.findByResourceId(resourceId);
+        return CustomerConverter.convertFromTo(found, PublicCustomerDto.class);
+    }
+
+    @GetMapping(headers = {HttpHeaders.CONTENT_TYPE})
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<PublicCustomerDto> findAll() {
+        List<CustomerEntity> customers = service.findAll();
+        return CustomerConverter.convertListFromTo(customers, PublicCustomerDto.class);
     }
 
     @Transactional
     @PutMapping("/{resourceId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void updateByResourceId(@PathVariable UUID resourceId, @RequestBody Customer customer) {
+    public void updateByResourceId(@PathVariable UUID resourceId, @RequestBody UpdateCustomerDto customer) {
         service.updateByResourceId(resourceId, customer);
     }
 

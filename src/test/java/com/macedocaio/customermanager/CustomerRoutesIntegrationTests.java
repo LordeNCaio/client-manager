@@ -2,12 +2,12 @@ package com.macedocaio.customermanager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.macedocaio.customermanager.controllers.CustomerController;
-import com.macedocaio.customermanager.entities.Customer;
+import com.macedocaio.customermanager.entities.CustomerEntity;
 import com.macedocaio.customermanager.exceptions.ErrorMessage;
 import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseException;
 import com.macedocaio.customermanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.customermanager.exceptions.customer.UsernameAlreadyInUseException;
-import com.macedocaio.customermanager.utils.CustomerUtils;
+import com.macedocaio.customermanager.utils.CustomerTestsUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -38,11 +38,11 @@ public class CustomerRoutesIntegrationTests {
     private ObjectMapper mapper;
 
     private static UUID resourceId;
-    private static Customer customer;
+    private static CustomerEntity customer;
 
     @BeforeAll
     public static void beforeAll() {
-        customer = CustomerUtils.createJohnDoe();
+        customer = CustomerTestsUtils.createJohnDoe();
         resourceId = customer.getResourceId();
     }
 
@@ -77,7 +77,7 @@ public class CustomerRoutesIntegrationTests {
     public void shouldReturnCpfAlreadyInUseOnSingleRoute() throws Exception {
         CpfAlreadyInUseException exception = new CpfAlreadyInUseException(customer);
 
-        Customer localCustomer = CustomerUtils.createJohnDoe();
+        CustomerEntity localCustomer = CustomerTestsUtils.createJohnDoe();
         localCustomer.setUsername("littlejohn002");
 
         MockHttpServletRequestBuilder builder = getCreateSingleRoute(localCustomer);
@@ -101,14 +101,14 @@ public class CustomerRoutesIntegrationTests {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
                 .andReturn();
 
-        Customer customer = mapper.readValue(result.getResponse().getContentAsString(), Customer.class);
+        CustomerEntity customer = mapper.readValue(result.getResponse().getContentAsString(), CustomerEntity.class);
         assertNotNull(customer);
     }
 
     @Test
     @Order(5)
     public void shouldUpdateSingleResourceId() throws Exception {
-        Customer customer = CustomerUtils.createJohnDoe();
+        CustomerEntity customer = CustomerTestsUtils.createJohnDoe();
         customer.setFirstname("Johnny");
         customer.setLastname("Knoxville");
 
@@ -180,7 +180,7 @@ public class CustomerRoutesIntegrationTests {
                 .andReturn();
     }
 
-    private MockHttpServletRequestBuilder getCreateSingleRoute(Customer customer) throws Exception {
+    private MockHttpServletRequestBuilder getCreateSingleRoute(CustomerEntity customer) throws Exception {
         return MockMvcRequestBuilders
                 .post(CustomerController.BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
