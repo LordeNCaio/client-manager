@@ -28,7 +28,8 @@ public class CustomerService {
         if (searched == null) {
             throw new RuntimeException("Customer doesn't exists!");
         }
-        repository.save(customer);
+
+        repository.updateByResourceId(resourceId, customer);
     }
 
     public void deleteByResourceId(UUID resourceId) {

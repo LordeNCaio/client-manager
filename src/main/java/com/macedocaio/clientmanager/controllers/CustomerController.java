@@ -29,9 +29,10 @@ public class CustomerController {
     @GetMapping(value = "/{resourceId}", headers = {HttpHeaders.CONTENT_TYPE})
     @ResponseStatus(HttpStatus.FOUND)
     public Customer findByResourceId(@PathVariable UUID resourceId) {
-        return new Customer();
+        return service.findByResourceId(resourceId);
     }
 
+    @Transactional
     @PutMapping("/{resourceId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void updateByResourceId(@PathVariable UUID resourceId, @RequestBody Customer customer) {
