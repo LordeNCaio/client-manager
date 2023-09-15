@@ -123,4 +123,33 @@ public class CreateCustomerDto implements Customer {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CreateCustomerDto that = (CreateCustomerDto) o;
+
+        if (!username.equals(that.username)) return false;
+        return cpf.equals(that.cpf);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = username.hashCode();
+        result = 31 * result + cpf.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateCustomerDto{" +
+                "username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", birthday=" + birthday +
+                ", cpf='" + cpf + '\'' +
+                '}';
+    }
 }

@@ -14,18 +14,47 @@ import java.util.UUID;
 @Repository
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
 
+    /**
+     * Procura um objeto do tipo {@link CustomerEntity} pelo 'resourceId'
+     *
+     * @param resourceId Identificador que será utilizado na busca
+     * @return {@link Optional<CustomerEntity>}
+     */
     Optional<CustomerEntity> findByResourceId(UUID resourceId);
 
+    /**
+     * Procura um objeto do tipo {@link CustomerEntity} pelo 'username'
+     *
+     * @param username Identificador que será utilizado na busca
+     * @return {@link Optional<CustomerEntity>}
+     */
     Optional<CustomerEntity> findByUsername(String username);
 
+    /**
+     * Procura um objeto do tipo {@link CustomerEntity} pelo 'cpf'
+     *
+     * @param cpf Identificador que será utilizado na busca
+     * @return {@link Optional<CustomerEntity>}
+     */
     Optional<CustomerEntity> findByCpf(String cpf);
 
-    void deleteByResourceId(UUID resourceId);
-
+    /**
+     * Atualiza um objeto do tipo {@link CustomerEntity} pelo 'resourceId'
+     *
+     * @param resourceId        Identificador que será utilizado na busca
+     * @param updateCustomerDto Objeto contendo as atualizações
+     */
     @Modifying
-    @Query(value = "update CustomerEntity c set c.firstname = :#{#customer.firstname}, c.lastname = :#{#customer.lastname}," +
-            "c.birthday = :#{#customer.birthday} where c.resourceId = :resourceId")
-    void updateByResourceId(@Param("resourceId") UUID resourceId, @Param("customer") UpdateCustomerDto customer);
+    @Query(value = "update CustomerEntity c set c.firstname = :#{#customer.firstname}, " +
+            "c.lastname = :#{#updateCustomerDto.lastname}," + "c.birthday = :#{#customer.birthday} " +
+            "where c.resourceId = :resourceId")
+    void updateByResourceId(@Param("resourceId") UUID resourceId,
+                            @Param("customer") UpdateCustomerDto updateCustomerDto);
 
-
+    /**
+     * Deleta um objeto do tipo {@link CustomerEntity} pelo 'resourceId'
+     *
+     * @param resourceId Identificador que será utilizado na busca
+     */
+    void deleteByResourceId(UUID resourceId);
 }

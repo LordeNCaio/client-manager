@@ -1,6 +1,5 @@
 package com.macedocaio.customermanager.dto.customer;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.macedocaio.customermanager.entities.interfaces.Customer;
 import com.macedocaio.customermanager.utils.CpfUtils;
@@ -8,7 +7,7 @@ import com.macedocaio.customermanager.utils.CpfUtils;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"id"})
 public class PublicCustomerDto implements Customer {
     private UUID resourceId;
     private String username;
@@ -32,7 +31,6 @@ public class PublicCustomerDto implements Customer {
 
 
     @Override
-    @JsonIgnore
     public Long getId() {
         return null;
     }
@@ -68,7 +66,6 @@ public class PublicCustomerDto implements Customer {
     }
 
     @Override
-    @JsonIgnore
     public void setId(Long id) {}
 
     @Override
@@ -119,5 +116,17 @@ public class PublicCustomerDto implements Customer {
         result = 31 * result + username.hashCode();
         result = 31 * result + cpf.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PublicCustomerDto{" +
+                "resourceId=" + resourceId +
+                ", username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", birthday=" + birthday +
+                ", cpf='" + cpf + '\'' +
+                '}';
     }
 }

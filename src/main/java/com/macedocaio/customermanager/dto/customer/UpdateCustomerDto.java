@@ -7,7 +7,7 @@ import com.macedocaio.customermanager.entities.interfaces.Customer;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"id", "resourceId", "username", "cpf"})
 public class UpdateCustomerDto implements Customer {
 
     private String firstname;
@@ -24,19 +24,16 @@ public class UpdateCustomerDto implements Customer {
     }
 
     @Override
-    @JsonIgnore
     public Long getId() {
         return null;
     }
 
     @Override
-    @JsonIgnore
     public UUID getResourceId() {
         return null;
     }
 
     @Override
-    @JsonIgnore
     public String getUsername() {
         return null;
     }
@@ -92,4 +89,33 @@ public class UpdateCustomerDto implements Customer {
     @Override
     @JsonIgnore
     public void setCpf(String cpf) {}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UpdateCustomerDto that = (UpdateCustomerDto) o;
+
+        if (!firstname.equals(that.firstname)) return false;
+        if (!lastname.equals(that.lastname)) return false;
+        return birthday.equals(that.birthday);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = firstname.hashCode();
+        result = 31 * result + lastname.hashCode();
+        result = 31 * result + birthday.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UpdateCustomerDto{" +
+                "firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", birthday=" + birthday +
+                '}';
+    }
 }
