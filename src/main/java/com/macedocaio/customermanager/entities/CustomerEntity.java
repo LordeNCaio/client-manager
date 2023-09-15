@@ -3,6 +3,7 @@ package com.macedocaio.customermanager.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.macedocaio.customermanager.annotations.Cpf;
 import com.macedocaio.customermanager.entities.interfaces.Customer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -49,8 +50,9 @@ public class CustomerEntity implements Customer {
     @Column(nullable = false)
     private LocalDate birthday;
 
-    @Size(max = 14)
+    @Size(max = 11)
     @Column(nullable = false, unique = true, length = 11)
+    @Cpf(message = "Insert a valid CPF number")
     private String cpf;
 
     public CustomerEntity() {

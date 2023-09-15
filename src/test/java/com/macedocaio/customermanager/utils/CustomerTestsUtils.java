@@ -15,7 +15,7 @@ public final class CustomerTestsUtils {
                 .withUsername("john_doe_001")
                 .withFirstname("John")
                 .withLastname("Doe")
-                .withCpf("778.585.598-69")
+                .withCpf("77858559869")
                 .withBirthday(LocalDate.of(2001, 1, 1))
                 .build();
     }
@@ -27,7 +27,7 @@ public final class CustomerTestsUtils {
                 .withUsername("jane_doe_001")
                 .withFirstname("Jane")
                 .withLastname("Doe")
-                .withCpf("194.557.968-48")
+                .withCpf("19455796848")
                 .withBirthday(LocalDate.of(2001, 1, 1))
                 .build();
     }
@@ -39,7 +39,7 @@ public final class CustomerTestsUtils {
                 .withUsername("baby_doe_001")
                 .withFirstname("Baby")
                 .withLastname("Doe")
-                .withCpf("213.176.718-80")
+                .withCpf("21317671880")
                 .withBirthday(LocalDate.of(2020, 1, 1))
                 .build();
     }
