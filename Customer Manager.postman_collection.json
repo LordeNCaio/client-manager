@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "3e93cc88-99d2-42b9-8485-eb122e430572",
+		"name": "Customer Manager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createSingle",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"littlejohn003\",\r\n    \"firstname\": \"John\",\r\n    \"lastname\": \"Doe\",\r\n    \"birthday\": \"2001-01-01\",\r\n    \"cpf\": \"778.585.598-69\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findSingleByResourceId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/customers/5c79004a-8616-428a-b7e3-08d376a24706",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customers",
+						"5c79004a-8616-428a-b7e3-08d376a24706"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateSingleByResourceId",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\": \"Little John\",\r\n    \"lastname\": \"Big Doe\",\r\n    \"birthday\": \"2001-03-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/customers/5c79004a-8616-428a-b7e3-08d376a24706",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customers",
+						"5c79004a-8616-428a-b7e3-08d376a24706"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteSingleByResourceId",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/customers/58131cc3-4c72-455b-b179-9748bb0ad763",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customers",
+						"58131cc3-4c72-455b-b179-9748bb0ad763"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
