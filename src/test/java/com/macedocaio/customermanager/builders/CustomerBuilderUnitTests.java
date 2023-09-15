@@ -1,10 +1,7 @@
 package com.macedocaio.customermanager.builders;
 
 import com.macedocaio.customermanager.entities.CustomerEntity;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -15,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerBuilderUnitTests {
 
     private final Long id = 1L;
@@ -24,25 +20,22 @@ public class CustomerBuilderUnitTests {
     private final String firstname = "Claro";
     private final String lastname = "TV";
     private final LocalDate birthday = LocalDate.of(2008, 12, 16);
-    private final String cpf = "326.735.038-70";
+    private final String cpf = "32673503870";
 
     @Test
-    @Order(1)
-    public void shouldGetBuilderInstance() {
+    public void should_1Get_1Builder_1Instance() {
         CustomerBuilder builder = CustomerBuilder.getBuilder();
         assertNotNull(builder, "Builder instance is null!");
     }
 
     @Test
-    @Order(2)
-    public void shouldBuildEmptyCustomer() {
+    public void should_1Build_1Empty_1Customer() {
         CustomerEntity customer = CustomerBuilder.getBuilder().build();
         assertNotNull(customer, "Customer instance is null!");
     }
 
     @Test
-    @Order(3)
-    public void shouldBuildCustomerWithId() {
+    public void should_1Build_1Customer_1With_1Id() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withId(id);
         CustomerEntity customer = builder.build();
@@ -53,8 +46,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    @Order(4)
-    public void shouldBuildCustomerWithResourceId() {
+    public void should_1Build_1Customer_1With_1ResourceId() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withResourceId(resourceId);
         CustomerEntity customer = builder.build();
@@ -65,8 +57,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    @Order(5)
-    public void shouldBuildCustomerWithUsername() {
+    public void should_1Build_1Customer_1With_1Username() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withUsername(username);
         CustomerEntity customer = builder.build();
@@ -77,8 +68,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    @Order(6)
-    public void shouldBuildCustomerWithFirstname() {
+    public void should_1Build_1Customer_1With_1Firstname() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withFirstname(firstname);
         CustomerEntity customer = builder.build();
@@ -89,8 +79,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    @Order(7)
-    public void shouldBuildCustomerWithLastname() {
+    public void should_1Build_1Customer_1With_1Lastname() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withLastname(lastname);
         CustomerEntity customer = builder.build();
@@ -101,8 +90,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    @Order(8)
-    public void shouldBuildCustomerWithBirthday() {
+    public void should_1Build_1Customer_1With_1Birthday() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withBirthday(birthday);
         CustomerEntity customer = builder.build();
@@ -113,8 +101,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    @Order(9)
-    public void shouldBuildCustomerWithCpf() {
+    public void should_1Build_1Customer_1With_1Cpf() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withCpf(cpf);
         CustomerEntity customer = builder.build();
@@ -125,8 +112,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    @Order(10)
-    public void shouldBuildFullCustomer() {
+    public void should_1Build_1Full_1Customer() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withId(id)
                 .withResourceId(resourceId)

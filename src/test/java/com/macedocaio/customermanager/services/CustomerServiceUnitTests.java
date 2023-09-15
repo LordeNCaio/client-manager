@@ -48,7 +48,7 @@ public class CustomerServiceUnitTests {
     }
 
     @Test
-    public void shouldCreateSingle() {
+    public void should_Create_Single() {
         when(repository.save(Mockito.any(CustomerEntity.class))).thenReturn(customer);
 
         CreateCustomerDto dto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
@@ -59,7 +59,7 @@ public class CustomerServiceUnitTests {
     }
 
     @Test
-    public void shouldFindByResourceId() {
+    public void should_Find_By_ResourceId() {
         when(repository.findByResourceId(Mockito.any(UUID.class))).thenReturn(ofNullable(customer));
         CustomerEntity found = service.findByResourceId(resourceId);
 
@@ -68,7 +68,7 @@ public class CustomerServiceUnitTests {
     }
 
     @Test
-    public void shouldFindByAll() {
+    public void should_Find_All() {
         List<CustomerEntity> customers = Arrays.asList(CustomerTestsUtils.createJohnDoe(), CustomerTestsUtils.createJaneDoe(),
                 CustomerTestsUtils.createBabyDoe());
 
@@ -81,7 +81,7 @@ public class CustomerServiceUnitTests {
     }
 
     @Test
-    public void shouldUpdateByResourceId() {
+    public void should_Update_By_ResourceId() {
         when(repository.findByResourceId(Mockito.any(UUID.class))).thenReturn(ofNullable(customer));
 
         CustomerEntity expected = service.findByResourceId(resourceId);
@@ -96,7 +96,7 @@ public class CustomerServiceUnitTests {
     }
 
     @Test
-    public void shouldDeleteByResourceId() {
+    public void should_Delete_By_ResourceId() {
         when(repository.findByResourceId(Mockito.any(UUID.class))).thenReturn(ofNullable(customer));
 
         CustomerEntity found = service.findByResourceId(resourceId);
@@ -107,7 +107,7 @@ public class CustomerServiceUnitTests {
     }
 
     @Test
-    public void shouldThrowUsernameAlreadyInUseExceptionOnCreateSingle() {
+    public void should_Throw_Username_Already_In_Use_Exception_On_Create_Single() {
         when(repository.findByUsername(any(String.class))).thenReturn(ofNullable(customer));
 
         CreateCustomerDto dto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
@@ -119,7 +119,7 @@ public class CustomerServiceUnitTests {
     }
 
     @Test
-    public void shouldThrowCpfAlreadyInUseExceptionOnCreateSingle() {
+    public void should_Throw_Cpf_Already_In_Use_Exception_On_Create_Single() {
         when(repository.findByUsername(any(String.class))).thenReturn(empty());
         when(repository.findByCpf(any(String.class))).thenReturn(ofNullable(customer));
 
@@ -132,7 +132,7 @@ public class CustomerServiceUnitTests {
     }
 
     @Test
-    public void shouldThrowCustomerNotFoundExceptionOnFindByResourceId() {
+    public void should_Throw_Customer_Not_Found_Exception_On_Find_By_ResourceId() {
         when(repository.findByResourceId(any(UUID.class))).thenReturn(empty());
 
         Throwable throwable = assertThrowsExactly(CustomerNotFoundException.class,
@@ -142,7 +142,7 @@ public class CustomerServiceUnitTests {
     }
 
     @Test
-    public void shouldThrowCustomerNotFoundExceptionOnUpdateByResourceId() {
+    public void should_Throw_Customer_Not_Found_Exception_On_Update_By_ResourceId() {
         when(repository.findByResourceId(any(UUID.class))).thenReturn(empty());
 
         UpdateCustomerDto updated = CustomerConverter.convertFromTo(customer, UpdateCustomerDto.class);
@@ -154,7 +154,7 @@ public class CustomerServiceUnitTests {
     }
 
     @Test
-    public void shouldThrowCustomerNotFoundExceptionOnDeleteByResourceId() {
+    public void should_Throw_Customer_Not_Found_Exception_On_Delete_By_ResourceId() {
         when(repository.findByResourceId(any(UUID.class))).thenReturn(empty());
 
         Throwable throwable = assertThrowsExactly(CustomerNotFoundException.class,

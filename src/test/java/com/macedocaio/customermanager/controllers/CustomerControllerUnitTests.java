@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerControllerUnitTests {
     @Spy
     @InjectMocks
@@ -43,7 +42,6 @@ public class CustomerControllerUnitTests {
     }
 
     @Test
-    @Order(1)
     public void shouldCreateSingle() {
         when(service.createSingle(Mockito.any(CreateCustomerDto.class))).thenReturn(customer);
 
@@ -57,8 +55,7 @@ public class CustomerControllerUnitTests {
     }
 
     @Test
-    @Order(2)
-    public void shouldFindByResourceId() {
+    public void should_Find_By_ResourceId() {
         when(service.findByResourceId(Mockito.any(UUID.class))).thenReturn(customer);
 
         PublicCustomerDto expected = CustomerConverter.convertFromTo(customer, PublicCustomerDto.class);
@@ -69,8 +66,7 @@ public class CustomerControllerUnitTests {
     }
 
     @Test
-    @Order(2)
-    public void shouldFindAll() {
+    public void should_Find_All() {
         List<CustomerEntity> customers = Arrays.asList(CustomerTestsUtils.createJohnDoe(), CustomerTestsUtils.createJaneDoe(),
                 CustomerTestsUtils.createBabyDoe());
 
@@ -83,8 +79,7 @@ public class CustomerControllerUnitTests {
     }
 
     @Test
-    @Order(4)
-    public void shouldUpdateByResourceId() {
+    public void should_Update_By_ResourceId() {
         when(service.findByResourceId(Mockito.any(UUID.class))).thenReturn(customer);
 
         PublicCustomerDto expected = controller.findByResourceId(resourceId);
@@ -99,8 +94,7 @@ public class CustomerControllerUnitTests {
     }
 
     @Test
-    @Order(5)
-    public void shouldDeleteByResourceId() {
+    public void should_Delete_By_ResourceId() {
         when(service.findByResourceId(Mockito.any(UUID.class))).thenReturn(customer);
 
         PublicCustomerDto actual = controller.findByResourceId(resourceId);
