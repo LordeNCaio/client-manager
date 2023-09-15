@@ -8,7 +8,7 @@ import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseExcepti
 import com.macedocaio.customermanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.customermanager.exceptions.customer.UsernameAlreadyInUseException;
 import com.macedocaio.customermanager.repositories.CustomerRepository;
-import com.macedocaio.customermanager.utils.CustomerTestsUtils;
+import com.macedocaio.customermanager.mocks.CustomerTestsUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

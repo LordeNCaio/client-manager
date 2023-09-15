@@ -6,7 +6,7 @@ import com.macedocaio.customermanager.dto.customer.PublicCustomerDto;
 import com.macedocaio.customermanager.dto.customer.UpdateCustomerDto;
 import com.macedocaio.customermanager.entities.CustomerEntity;
 import com.macedocaio.customermanager.services.CustomerService;
-import com.macedocaio.customermanager.utils.CustomerTestsUtils;
+import com.macedocaio.customermanager.mocks.CustomerTestsUtils;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

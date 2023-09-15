@@ -11,7 +11,7 @@ import com.macedocaio.customermanager.exceptions.ErrorMessage;
 import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseException;
 import com.macedocaio.customermanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.customermanager.exceptions.customer.UsernameAlreadyInUseException;
-import com.macedocaio.customermanager.utils.CustomerTestsUtils;
+import com.macedocaio.customermanager.mocks.CustomerTestsUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.macedocaio.customermanager.utils;
+package com.macedocaio.customermanager.mocks;
 
 import com.macedocaio.customermanager.builders.CustomerBuilder;
 import com.macedocaio.customermanager.entities.CustomerEntity;
