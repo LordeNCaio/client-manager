@@ -1,6 +1,7 @@
 package com.macedocaio.customermanager.exceptions.customer;
 
 import com.macedocaio.customermanager.entities.CustomerEntity;
+import com.macedocaio.customermanager.entities.interfaces.Customer;
 
 /**
  * @author caiom
@@ -9,15 +10,15 @@ import com.macedocaio.customermanager.entities.CustomerEntity;
 public abstract class CustomerException extends RuntimeException {
 
     /**
-     * Objeto {@link CustomerEntity} que causou a exceção
+     * Objeto {@link Customer} que causou a exceção
      */
-    protected final CustomerEntity customer;
+    protected final Customer customer;
 
     /**
      * Construtor padrão para exceção
      * @param customer que causou a exceção
      */
-    public CustomerException(CustomerEntity customer) {
+    public CustomerException(Customer customer) {
         this.customer = customer;
     }
 
@@ -25,7 +26,7 @@ public abstract class CustomerException extends RuntimeException {
      * Retornar o objeto causado da exceção
      * @return  {@link #customer}
      */
-    public CustomerEntity getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 

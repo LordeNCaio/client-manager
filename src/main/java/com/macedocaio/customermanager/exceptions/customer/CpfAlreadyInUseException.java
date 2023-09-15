@@ -1,6 +1,7 @@
 package com.macedocaio.customermanager.exceptions.customer;
 
 import com.macedocaio.customermanager.entities.CustomerEntity;
+import com.macedocaio.customermanager.entities.interfaces.Customer;
 
 /**
  * @author caiom
@@ -11,7 +12,7 @@ public class CpfAlreadyInUseException extends CustomerException {
     /**
      * {@inheritDoc}
      */
-    public CpfAlreadyInUseException(CustomerEntity customer) {
+    public CpfAlreadyInUseException(Customer customer) {
         super(customer);
     }
 
