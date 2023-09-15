@@ -46,7 +46,7 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> 
      */
     @Modifying
     @Query(value = "update CustomerEntity c set c.firstname = :#{#customer.firstname}, " +
-            "c.lastname = :#{#updateCustomerDto.lastname}," + "c.birthday = :#{#customer.birthday} " +
+            "c.lastname = :#{#customer.lastname}," + "c.birthday = :#{#customer.birthday} " +
             "where c.resourceId = :resourceId")
     void updateByResourceId(@Param("resourceId") UUID resourceId,
                             @Param("customer") UpdateCustomerDto updateCustomerDto);
