@@ -42,8 +42,8 @@ public final class CpfUtils {
         int sum = numbers.stream()
                 .reduce(0, (acc, number) -> acc + (number * start.getAndDecrement()));
 
-        int digit = 11 - (sum % 11);
+        int rest = (sum % 11);
 
-        return digit == 10 ? 0 : digit;
+        return rest < 2 ? 0 : (11 - rest);
     }
 }
