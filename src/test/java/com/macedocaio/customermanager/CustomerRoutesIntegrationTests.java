@@ -2,13 +2,18 @@ package com.macedocaio.customermanager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.macedocaio.customermanager.controllers.CustomerController;
+import com.macedocaio.customermanager.dto.converters.CustomerConverter;
+import com.macedocaio.customermanager.dto.customer.CreateCustomerDto;
+import com.macedocaio.customermanager.dto.customer.PublicCustomerDto;
+import com.macedocaio.customermanager.dto.customer.UpdateCustomerDto;
 import com.macedocaio.customermanager.entities.CustomerEntity;
 import com.macedocaio.customermanager.exceptions.ErrorMessage;
 import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseException;
 import com.macedocaio.customermanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.customermanager.exceptions.customer.UsernameAlreadyInUseException;
 import com.macedocaio.customermanager.utils.CustomerTestsUtils;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerRoutesIntegrationTests {
 
     @Autowired
@@ -37,82 +41,57 @@ public class CustomerRoutesIntegrationTests {
     @Autowired
     private ObjectMapper mapper;
 
-    private static UUID resourceId;
-    private static CustomerEntity customer;
+    private CreateCustomerDto createCustomerDto;
 
-    @BeforeAll
-    public static void beforeAll() {
-        customer = CustomerTestsUtils.createJohnDoe();
-        resourceId = customer.getResourceId();
+    @AfterEach
+    public void afterEach() {
+        createCustomerDto = null;
     }
 
     @Test
-    @Order(1)
-    public void shouldCallCreateSingleRoute() throws Exception {
-        MockHttpServletRequestBuilder builder = getCreateSingleRoute(customer);
+    public void should_Call_Create_Single_Route() throws Exception {
+        CustomerEntity customer = CustomerTestsUtils.createJohnDoe();
+        createCustomerDto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
 
+        MockHttpServletRequestBuilder builder = getCreateSingleRoute(createCustomerDto);
         mvc.perform(builder)
                 .andExpect(status().is(HttpStatus.CREATED.value()))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     @Test
-    @Order(2)
-    public void shouldReturnUsernameAlreadyInUseOnSingleRoute() throws Exception {
-        UsernameAlreadyInUseException exception = new UsernameAlreadyInUseException(customer);
+    public void should_Find_Single_By_ResourceId() throws Exception {
+        CustomerEntity customer = CustomerTestsUtils.createJohnDoe();
+        customer.setUsername("john_doe_002");
+        customer.setCpf("95554736840");
 
-        MockHttpServletRequestBuilder builder = getCreateSingleRoute(customer);
+        createCustomerDto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
+        PublicCustomerDto publicCustomer = createCustomerForTest();
 
-        MvcResult result = mvc.perform(builder)
-                .andExpect(status().is(HttpStatus.CONFLICT.value()))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andReturn();
-
-        ErrorMessage errorMessage = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
-        assertEquals(errorMessage.getMessage(), exception.getMessage());
-    }
-
-    @Test
-    @Order(3)
-    public void shouldReturnCpfAlreadyInUseOnSingleRoute() throws Exception {
-        CpfAlreadyInUseException exception = new CpfAlreadyInUseException(customer);
-
-        CustomerEntity localCustomer = CustomerTestsUtils.createJohnDoe();
-        localCustomer.setUsername("littlejohn002");
-
-        MockHttpServletRequestBuilder builder = getCreateSingleRoute(localCustomer);
-
-        MvcResult result = mvc.perform(builder)
-                .andExpect(status().is(HttpStatus.CONFLICT.value()))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andReturn();
-
-        ErrorMessage errorMessage = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
-        assertEquals(errorMessage.getMessage(), exception.getMessage());
-    }
-
-    @Test
-    @Order(4)
-    public void shouldFindSingleResourceId() throws Exception {
-        MockHttpServletRequestBuilder builder = getFindSingleByResourceId(resourceId);
+        MockHttpServletRequestBuilder builder = getFindSingleByResourceId(publicCustomer.getResourceId());
 
         MvcResult result = mvc.perform(builder)
                 .andExpect(status().is(HttpStatus.FOUND.value()))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
                 .andReturn();
 
-        CustomerEntity customer = mapper.readValue(result.getResponse().getContentAsString(), CustomerEntity.class);
-        assertNotNull(customer);
+        PublicCustomerDto publicCustomerDto = mapper.readValue(result.getResponse().getContentAsString(),
+                PublicCustomerDto.class);
+        assertNotNull(publicCustomerDto);
     }
 
     @Test
-    @Order(5)
-    public void shouldUpdateSingleResourceId() throws Exception {
-        CustomerEntity customer = CustomerTestsUtils.createJohnDoe();
-        customer.setFirstname("Johnny");
-        customer.setLastname("Knoxville");
+    public void should_Update_Single_By_ResourceId() throws Exception {
+        CustomerEntity customer = CustomerTestsUtils.createJaneDoe();
+        createCustomerDto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
+        PublicCustomerDto publicCustomer = createCustomerForTest();
 
-        MockHttpServletRequestBuilder builder = getUpdateSingleByResourceId(resourceId);
+        UpdateCustomerDto updateCustomerDto = CustomerConverter.convertFromTo(customer, UpdateCustomerDto.class);
+        updateCustomerDto.setFirstname("Johnny");
+        updateCustomerDto.setLastname("Knoxville");
+
+        MockHttpServletRequestBuilder builder = getUpdateSingleByResourceId(publicCustomer.getResourceId(),
+                updateCustomerDto);
 
         mvc.perform(builder)
                 .andExpect(status().is(HttpStatus.ACCEPTED.value()))
@@ -120,8 +99,65 @@ public class CustomerRoutesIntegrationTests {
     }
 
     @Test
-    @Order(6)
-    public void shouldReturnCustomerNotFoundOnFindSingleResourceId() throws Exception {
+    public void should_Delete_Single_By_ResourceId() throws Exception {
+        CustomerEntity customer = CustomerTestsUtils.createBabyDoe();
+        createCustomerDto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
+        PublicCustomerDto publicCustomer = createCustomerForTest();
+
+        MockHttpServletRequestBuilder builder = getDeleteSingleByResourceId(publicCustomer.getResourceId());
+
+        mvc.perform(builder)
+                .andExpect(status().is(HttpStatus.ACCEPTED.value()))
+                .andReturn();
+    }
+
+    @Test
+    public void should_Throw_Username_Already_In_Use_On_Find_Single_By_ResourceId_Route() throws Exception {
+        CustomerEntity customer = CustomerTestsUtils.createJaneDoe();
+        customer.setUsername("jane_doe_002");
+        customer.setCpf("20169650880");
+
+        createCustomerDto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
+        createCustomerForTest();
+
+        UsernameAlreadyInUseException exception = new UsernameAlreadyInUseException(customer);
+        MockHttpServletRequestBuilder builder = getCreateSingleRoute(createCustomerDto);
+
+        MvcResult result = mvc.perform(builder)
+                .andExpect(status().is(HttpStatus.CONFLICT.value()))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+
+        ErrorMessage errorMessage = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
+        assertEquals(errorMessage.getMessage(), exception.getMessage());
+    }
+
+    @Test
+    public void should_Throw_Cpf_Already_In_Use_On_Find_Single_By_ResourceId_Route() throws Exception {
+        CustomerEntity customer = CustomerTestsUtils.createJaneDoe();
+        customer.setUsername("jane_doe_003");
+        customer.setCpf("69917104828");
+
+        createCustomerDto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
+        createCustomerForTest();
+
+        createCustomerDto.setUsername("jane_doe_004");
+
+        CpfAlreadyInUseException exception = new CpfAlreadyInUseException(customer);
+        MockHttpServletRequestBuilder builder = getCreateSingleRoute(createCustomerDto);
+
+        MvcResult result = mvc.perform(builder)
+                .andExpect(status().is(HttpStatus.CONFLICT.value()))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andReturn();
+
+        ErrorMessage errorMessage = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
+        assertEquals(errorMessage.getMessage(), exception.getMessage());
+    }
+
+
+    @Test
+    public void should_Throw_Customer_Not_Found_On_Find_Single_By_ResourceId_Route() throws Exception {
         UUID localResourceId = UUID.randomUUID();
         CustomerNotFoundException exception = new CustomerNotFoundException(localResourceId);
 
@@ -137,12 +173,11 @@ public class CustomerRoutesIntegrationTests {
     }
 
     @Test
-    @Order(7)
-    public void shouldReturnCustomerNotFoundOnUpdateSingleResourceId() throws Exception {
+    public void should_Throw_Customer_Not_Found_On_Find_Update_By_ResourceId_Route() throws Exception {
         UUID localResourceId = UUID.randomUUID();
         CustomerNotFoundException exception = new CustomerNotFoundException(localResourceId);
 
-        MockHttpServletRequestBuilder builder = getUpdateSingleByResourceId(localResourceId);
+        MockHttpServletRequestBuilder builder = getUpdateSingleByResourceId(localResourceId, new UpdateCustomerDto());
 
         MvcResult result = mvc.perform(builder)
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
@@ -151,11 +186,10 @@ public class CustomerRoutesIntegrationTests {
 
         ErrorMessage errorMessage = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
         assertEquals(errorMessage.getMessage(), exception.getMessage());
-    }
+}
 
     @Test
-    @Order(7)
-    public void shouldReturnCustomerNotFoundOnDeleteSingleResourceId() throws Exception {
+    public void should_Throw_Customer_Not_Found_On_Delete_Single_By_ResourceId_Route() throws Exception {
         UUID localResourceId = UUID.randomUUID();
         CustomerNotFoundException exception = new CustomerNotFoundException(localResourceId);
 
@@ -170,22 +204,12 @@ public class CustomerRoutesIntegrationTests {
         assertEquals(errorMessage.getMessage(), exception.getMessage());
     }
 
-    @Test
-    @Order(100)
-    public void shouldDeleteSingleResourceId() throws Exception {
-        MockHttpServletRequestBuilder builder = getDeleteSingleByResourceId(resourceId);
-
-        mvc.perform(builder)
-                .andExpect(status().is(HttpStatus.ACCEPTED.value()))
-                .andReturn();
-    }
-
-    private MockHttpServletRequestBuilder getCreateSingleRoute(CustomerEntity customer) throws Exception {
+    private MockHttpServletRequestBuilder getCreateSingleRoute(CreateCustomerDto createCustomerDto) throws Exception {
         return MockMvcRequestBuilders
                 .post(CustomerController.BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8)
-                .content(mapper.writeValueAsBytes(customer));
+                .content(mapper.writeValueAsBytes(createCustomerDto));
     }
 
     private MockHttpServletRequestBuilder getFindSingleByResourceId(UUID resourceId) {
@@ -195,11 +219,13 @@ public class CustomerRoutesIntegrationTests {
                 .characterEncoding(StandardCharsets.UTF_8);
     }
 
-    private MockHttpServletRequestBuilder getUpdateSingleByResourceId(UUID resourceId) throws Exception {
+    private MockHttpServletRequestBuilder getUpdateSingleByResourceId(UUID resourceId,
+                                                                      UpdateCustomerDto updateCustomerDto)
+            throws Exception {
         return MockMvcRequestBuilders
                 .put(String.format("%s/%s", CustomerController.BASE_URL, resourceId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(mapper.writeValueAsString(customer))
+                .content(mapper.writeValueAsString(updateCustomerDto))
                 .characterEncoding(StandardCharsets.UTF_8);
     }
 
@@ -208,5 +234,11 @@ public class CustomerRoutesIntegrationTests {
                 .delete(String.format("%s/%s", CustomerController.BASE_URL, resourceId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .characterEncoding(StandardCharsets.UTF_8);
+    }
+
+    private PublicCustomerDto createCustomerForTest() throws Exception {
+        return mapper.readValue(
+                mvc.perform(getCreateSingleRoute(createCustomerDto)).andReturn().getResponse().getContentAsString(),
+                PublicCustomerDto.class);
     }
 }

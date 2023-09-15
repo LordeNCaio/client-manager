@@ -1,6 +1,7 @@
 package com.macedocaio.customermanager.controllers;
 
 import com.macedocaio.customermanager.dto.converters.CustomerConverter;
+import com.macedocaio.customermanager.dto.customer.CreateCustomerDto;
 import com.macedocaio.customermanager.dto.customer.PublicCustomerDto;
 import com.macedocaio.customermanager.dto.customer.UpdateCustomerDto;
 import com.macedocaio.customermanager.entities.CustomerEntity;
@@ -31,8 +32,8 @@ public class CustomerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PublicCustomerDto createSingle(@Valid @RequestBody CustomerEntity customer) {
-        CustomerEntity saved = service.createSingle(customer);
+    public PublicCustomerDto createSingle(@Valid @RequestBody CreateCustomerDto dto) {
+        CustomerEntity saved = service.createSingle(dto);
         return CustomerConverter.convertFromTo(saved, PublicCustomerDto.class);
     }
 

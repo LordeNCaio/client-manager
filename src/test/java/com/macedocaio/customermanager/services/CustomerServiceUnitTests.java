@@ -1,15 +1,16 @@
 package com.macedocaio.customermanager.services;
 
 import com.macedocaio.customermanager.dto.converters.CustomerConverter;
+import com.macedocaio.customermanager.dto.customer.CreateCustomerDto;
 import com.macedocaio.customermanager.dto.customer.UpdateCustomerDto;
 import com.macedocaio.customermanager.entities.CustomerEntity;
 import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseException;
 import com.macedocaio.customermanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.customermanager.exceptions.customer.UsernameAlreadyInUseException;
 import com.macedocaio.customermanager.repositories.CustomerRepository;
-import com.macedocaio.customermanager.services.CustomerService;
 import com.macedocaio.customermanager.utils.CustomerTestsUtils;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -49,7 +50,9 @@ public class CustomerServiceUnitTests {
     @Test
     public void shouldCreateSingle() {
         when(repository.save(Mockito.any(CustomerEntity.class))).thenReturn(customer);
-        CustomerEntity saved = service.createSingle(customer);
+
+        CreateCustomerDto dto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
+        CustomerEntity saved = service.createSingle(dto);
 
         assertNotNull(saved);
         assertEquals(saved, customer);
@@ -107,8 +110,10 @@ public class CustomerServiceUnitTests {
     public void shouldThrowUsernameAlreadyInUseExceptionOnCreateSingle() {
         when(repository.findByUsername(any(String.class))).thenReturn(ofNullable(customer));
 
+        CreateCustomerDto dto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
+
         Throwable throwable = assertThrowsExactly(UsernameAlreadyInUseException.class,
-                () -> service.createSingle(customer));
+                () -> service.createSingle(dto));
 
         assertEquals(UsernameAlreadyInUseException.class, throwable.getClass());
     }
@@ -118,8 +123,10 @@ public class CustomerServiceUnitTests {
         when(repository.findByUsername(any(String.class))).thenReturn(empty());
         when(repository.findByCpf(any(String.class))).thenReturn(ofNullable(customer));
 
+        CreateCustomerDto dto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
+
         Throwable throwable = assertThrowsExactly(CpfAlreadyInUseException.class,
-                () -> service.createSingle(customer));
+                () -> service.createSingle(dto));
 
         assertEquals(CpfAlreadyInUseException.class, throwable.getClass());
     }

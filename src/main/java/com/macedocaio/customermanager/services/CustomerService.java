@@ -1,6 +1,8 @@
 package com.macedocaio.customermanager.services;
 
 
+import com.macedocaio.customermanager.dto.converters.CustomerConverter;
+import com.macedocaio.customermanager.dto.customer.CreateCustomerDto;
 import com.macedocaio.customermanager.dto.customer.UpdateCustomerDto;
 import com.macedocaio.customermanager.entities.CustomerEntity;
 import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseException;
@@ -33,10 +35,12 @@ public class CustomerService {
     /**
      * Cria um novo registo do tipo {@link CustomerEntity} no banco de dados
      *
-     * @param customer que será inserido no banco de dados
+     * @param dto que será inserido no banco de dados
      * @return entidade persistida no banco de dados
      */
-    public CustomerEntity createSingle(CustomerEntity customer) {
+    public CustomerEntity createSingle(CreateCustomerDto dto) {
+        CustomerEntity customer = CustomerConverter.convertFromTo(dto, CustomerEntity.class);
+
         isValidUsername(customer);
         isValidCpf(customer);
         return repository.save(customer);

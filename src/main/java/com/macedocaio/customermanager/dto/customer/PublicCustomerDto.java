@@ -3,6 +3,7 @@ package com.macedocaio.customermanager.dto.customer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.macedocaio.customermanager.entities.interfaces.Customer;
+import com.macedocaio.customermanager.utils.CpfUtils;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -63,7 +64,7 @@ public class PublicCustomerDto implements Customer {
 
     @Override
     public String getCpf() {
-        return cpf;
+        return CpfUtils.applyMask(cpf, true);
     }
 
     @Override

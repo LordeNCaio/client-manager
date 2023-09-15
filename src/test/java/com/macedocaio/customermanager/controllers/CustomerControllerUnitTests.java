@@ -1,7 +1,7 @@
 package com.macedocaio.customermanager.controllers;
 
-import com.macedocaio.customermanager.controllers.CustomerController;
 import com.macedocaio.customermanager.dto.converters.CustomerConverter;
+import com.macedocaio.customermanager.dto.customer.CreateCustomerDto;
 import com.macedocaio.customermanager.dto.customer.PublicCustomerDto;
 import com.macedocaio.customermanager.dto.customer.UpdateCustomerDto;
 import com.macedocaio.customermanager.entities.CustomerEntity;
@@ -45,10 +45,12 @@ public class CustomerControllerUnitTests {
     @Test
     @Order(1)
     public void shouldCreateSingle() {
-        when(service.createSingle(Mockito.any(CustomerEntity.class))).thenReturn(customer);
+        when(service.createSingle(Mockito.any(CreateCustomerDto.class))).thenReturn(customer);
 
         PublicCustomerDto expected = CustomerConverter.convertFromTo(customer, PublicCustomerDto.class);
-        PublicCustomerDto actual = controller.createSingle(customer);
+        CreateCustomerDto dto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
+
+        PublicCustomerDto actual = controller.createSingle(dto);
 
         assertNotNull(actual);
         assertEquals(expected, actual);
