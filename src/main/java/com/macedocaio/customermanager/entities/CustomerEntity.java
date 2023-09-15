@@ -1,15 +1,7 @@
 package com.macedocaio.customermanager.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.macedocaio.customermanager.annotations.Cpf;
 import com.macedocaio.customermanager.entities.interfaces.Customer;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -26,33 +18,19 @@ public class CustomerEntity implements Customer {
     @Column(nullable = false, unique = true, columnDefinition = "UUID")
     private UUID resourceId = UUID.randomUUID();
 
-    @NotBlank(message = "Username can't be null or empty")
-    @Size(min = 8, max = 16, message = "Username must have between 4 and 16 characters")
-    @Pattern(regexp = "[A-Za-z0-9_-]{4,16}", message = "Username accept only letters, numbers, minus and underscore")
     @Column(nullable = false, unique = true, length = 16)
     private String username;
 
-    @NotBlank(message = "Firstname can't be null or empty")
-    @Size(min = 1, max = 128, message = "Firstname must have between 1 and 128 characters")
-    @Pattern(regexp = "[A-Za-z]{1,128}", message = "Firstname accept only letters")
     @Column(nullable = false, length = 128)
     private String firstname;
 
-    @NotBlank(message = "Lastname can't be null or empty")
-    @Size(min = 1, max = 128, message = "Lastname must have between 1 and 128 characters")
-    @Pattern(regexp = "[A-Za-z]{1,128}", message = "Lastname accept only letters")
     @Column(nullable = false)
     private String lastname;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @Past(message = "Birthday must be in the past")
     @Column(nullable = false)
     private LocalDate birthday;
 
-    @Size(max = 11)
     @Column(nullable = false, unique = true, length = 11)
-    @Cpf(message = "Insert a valid CPF number")
     private String cpf;
 
     public CustomerEntity() {
