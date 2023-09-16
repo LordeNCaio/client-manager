@@ -11,8 +11,8 @@ A aplicação deverá Criar, Alterar, Excluir e Consultar Clientes.
 * Java 17 
 * Spring Boot 3.1.3
 * H2 Database 2.2.222
-* JUnit Jupiter 5.9.1
-* Mockito 4.8.0
+* JUnit Jupiter 5.10.0
+* Mockito 5.5.0
 * Hibernate Validator
 
 ## Utilização
