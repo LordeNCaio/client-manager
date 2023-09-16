@@ -38,6 +38,7 @@ public class CustomerRoutesIntegrationTests {
 
     @Autowired
     private MockMvc mvc;
+
     @Autowired
     private ObjectMapper mapper;
 

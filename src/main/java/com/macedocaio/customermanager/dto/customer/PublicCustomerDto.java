@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"id"})
 public class PublicCustomerDto implements Customer {
+
     private UUID resourceId;
     private String username;
     private String firstname;

@@ -5,9 +5,10 @@ import com.macedocaio.customermanager.dto.customer.CreateCustomerDto;
 import com.macedocaio.customermanager.dto.customer.PublicCustomerDto;
 import com.macedocaio.customermanager.dto.customer.UpdateCustomerDto;
 import com.macedocaio.customermanager.entities.CustomerEntity;
-import com.macedocaio.customermanager.services.CustomerService;
 import com.macedocaio.customermanager.mocks.CustomerTestsUtils;
-import org.junit.jupiter.api.*;
+import com.macedocaio.customermanager.services.CustomerService;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerControllerUnitTests {
+
     @Spy
     @InjectMocks
     private CustomerController controller;
@@ -31,18 +33,15 @@ public class CustomerControllerUnitTests {
     @Mock
     private CustomerService service;
 
-    private static UUID resourceId;
-
     private static CustomerEntity customer;
 
     @BeforeAll
     public static void beforeAll() {
         customer = CustomerTestsUtils.createJohnDoe();
-        resourceId = customer.getResourceId();
     }
 
     @Test
-    public void shouldCreateSingle() {
+    public void should_Create_Single() {
         when(service.createSingle(Mockito.any(CreateCustomerDto.class))).thenReturn(customer);
 
         PublicCustomerDto expected = CustomerConverter.convertFromTo(customer, PublicCustomerDto.class);
@@ -59,7 +58,7 @@ public class CustomerControllerUnitTests {
         when(service.findByResourceId(Mockito.any(UUID.class))).thenReturn(customer);
 
         PublicCustomerDto expected = CustomerConverter.convertFromTo(customer, PublicCustomerDto.class);
-        PublicCustomerDto actual = controller.findByResourceId(resourceId);
+        PublicCustomerDto actual = controller.findByResourceId(customer.getResourceId());
 
         assertNotNull(actual);
         assertEquals(expected, actual);
@@ -82,7 +81,7 @@ public class CustomerControllerUnitTests {
     public void should_Update_By_ResourceId() {
         when(service.findByResourceId(Mockito.any(UUID.class))).thenReturn(customer);
 
-        PublicCustomerDto expected = controller.findByResourceId(resourceId);
+        PublicCustomerDto expected = controller.findByResourceId(customer.getResourceId());
         expected.setFirstname("Johnny");
         expected.setLastname("Johnny");
 
@@ -97,7 +96,7 @@ public class CustomerControllerUnitTests {
     public void should_Delete_By_ResourceId() {
         when(service.findByResourceId(Mockito.any(UUID.class))).thenReturn(customer);
 
-        PublicCustomerDto actual = controller.findByResourceId(resourceId);
+        PublicCustomerDto actual = controller.findByResourceId(customer.getResourceId());
         controller.deleteByResourceId(actual.getResourceId());
 
         verify(controller, times(1)).deleteByResourceId(actual.getResourceId());

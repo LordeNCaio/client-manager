@@ -1,6 +1,5 @@
 package com.macedocaio.customermanager.exceptions.customer;
 
-import com.macedocaio.customermanager.entities.CustomerEntity;
 import com.macedocaio.customermanager.entities.interfaces.Customer;
 
 /**

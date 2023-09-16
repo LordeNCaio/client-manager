@@ -9,6 +9,7 @@ import jakarta.validation.ConstraintValidatorContext;
  * Validador utilizado pela anotação {@link Cpf}
  */
 public class CpfValidator implements ConstraintValidator<Cpf, String> {
+
     @Override
     public void initialize(Cpf constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);

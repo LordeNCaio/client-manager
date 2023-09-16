@@ -2,9 +2,9 @@ package com.macedocaio.customermanager.dto.converters;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.macedocaio.customermanager.entities.interfaces.Customer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +12,8 @@ import java.util.List;
  * Classe utiliza para converter implementações de {@link Customer} para outra implementação
  */
 public final class CustomerConverter {
+
+    private final static ObjectMapper mapper = new ObjectMapper();
 
     /**
      * Converte um objeto que implementa a interface {@link Customer}
@@ -23,7 +25,6 @@ public final class CustomerConverter {
      * @return objeto convertida
      */
     public static <F extends Customer, T extends Customer> T convertFromTo(F from, Class<T> toClass) {
-        ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
 
         try {
@@ -44,12 +45,14 @@ public final class CustomerConverter {
      * @return Lista de objetos convertida
      */
     public static <F extends Customer, T extends Customer> List<T> convertListFromTo(List<F> from, Class<T> toClass) {
-        List<T> customers = new ArrayList<>();
+        mapper.findAndRegisterModules();
+        CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, toClass);
 
-        for (Customer customer : from) {
-            customers.add(convertFromTo(customer, toClass));
+        try {
+            String json = mapper.writeValueAsString(from);
+            return mapper.readValue(json, collectionType);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-
-        return customers;
     }
 }

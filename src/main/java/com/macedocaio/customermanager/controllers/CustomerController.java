@@ -22,6 +22,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(CustomerController.BASE_URL)
 public class CustomerController {
+
     public static final String BASE_URL = "/customers";
 
     public final CustomerService service;
