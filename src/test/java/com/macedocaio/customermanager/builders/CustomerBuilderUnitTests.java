@@ -23,19 +23,19 @@ public class CustomerBuilderUnitTests {
     private final String cpf = "32673503870";
 
     @Test
-    public void should_1Get_1Builder_1Instance() {
+    public void should_Get_Builder_Instance() {
         CustomerBuilder builder = CustomerBuilder.getBuilder();
         assertNotNull(builder, "Builder instance is null!");
     }
 
     @Test
-    public void should_1Build_1Empty_1Customer() {
+    public void should_Build_Empty_Customer() {
         CustomerEntity customer = CustomerBuilder.getBuilder().build();
         assertNotNull(customer, "Customer instance is null!");
     }
 
     @Test
-    public void should_1Build_1Customer_1With_1Id() {
+    public void should_Build_Customer_With_Id() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withId(id);
         CustomerEntity customer = builder.build();
@@ -46,7 +46,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    public void should_1Build_1Customer_1With_1ResourceId() {
+    public void should_Build_Customer_With_ResourceId() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withResourceId(resourceId);
         CustomerEntity customer = builder.build();
@@ -57,7 +57,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    public void should_1Build_1Customer_1With_1Username() {
+    public void should_Build_Customer_With_Username() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withUsername(username);
         CustomerEntity customer = builder.build();
@@ -68,7 +68,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    public void should_1Build_1Customer_1With_1Firstname() {
+    public void should_Build_Customer_With_Firstname() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withFirstname(firstname);
         CustomerEntity customer = builder.build();
@@ -79,7 +79,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    public void should_1Build_1Customer_1With_1Lastname() {
+    public void should_Build_Customer_With_Lastname() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withLastname(lastname);
         CustomerEntity customer = builder.build();
@@ -90,7 +90,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    public void should_1Build_1Customer_1With_1Birthday() {
+    public void should_Build_Customer_With_Birthday() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withBirthday(birthday);
         CustomerEntity customer = builder.build();
@@ -101,7 +101,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    public void should_1Build_1Customer_1With_1Cpf() {
+    public void should_Build_Customer_With_Cpf() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withCpf(cpf);
         CustomerEntity customer = builder.build();
@@ -112,7 +112,7 @@ public class CustomerBuilderUnitTests {
     }
 
     @Test
-    public void should_1Build_1Full_1Customer() {
+    public void should_Build_Full_Customer() {
         CustomerBuilder builder = CustomerBuilder.getBuilder()
                 .withId(id)
                 .withResourceId(resourceId)

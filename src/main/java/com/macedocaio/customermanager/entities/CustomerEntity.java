@@ -7,30 +7,39 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "CUSTOMERS")
+@Table(name = CustomerEntity.TABLE_NAME)
 public class CustomerEntity implements Customer {
+
+    public static final String TABLE_NAME = "CUSTOMERS";
+    private static final String COLUMN_ID = "CUST_CD_CUSTOMER";
+    private static final String COLUMN_RESOURCE_ID = "CUST_CD_UUID";
+    private static final String COLUMN_USERNAME = "CUST_DS_USERNAME";
+    private static final String COLUMN_FIRSTNAME = "CUST_DS_FIRSTNAME";
+    private static final String COLUMN_LASTNAME = "CUST_DS_LASTNAME";
+    private static final String COLUMN_BIRTHDAY = "CUST_DT_BIRTHDAY";
+    private static final String COLUMN_CPF = "CUST_DS_CPF";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
+    @Column(name = COLUMN_ID, nullable = false, unique = true)
     private Long id;
 
-    @Column(nullable = false, unique = true, columnDefinition = "UUID")
+    @Column(name = COLUMN_RESOURCE_ID, nullable = false, unique = true, columnDefinition = "UUID")
     private UUID resourceId = UUID.randomUUID();
 
-    @Column(nullable = false, unique = true, length = 16)
+    @Column(name = COLUMN_USERNAME, nullable = false, unique = true, length = 16)
     private String username;
 
-    @Column(nullable = false, length = 128)
+    @Column(name = COLUMN_FIRSTNAME, nullable = false, length = 128)
     private String firstname;
 
-    @Column(nullable = false)
+    @Column(name = COLUMN_LASTNAME, nullable = false, length = 128)
     private String lastname;
 
-    @Column(nullable = false)
+    @Column(name = COLUMN_BIRTHDAY, nullable = false)
     private LocalDate birthday;
 
-    @Column(nullable = false, unique = true, length = 11)
+    @Column(name = COLUMN_CPF, nullable = false, unique = true, length = 11)
     private String cpf;
 
     public CustomerEntity() {
