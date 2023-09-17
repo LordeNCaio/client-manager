@@ -12,7 +12,7 @@ import java.util.UUID;
 public class CreateCustomerDto implements Customer {
 
     private static final String USERNAME_REGEX = "[A-Za-z0-9_-]*";
-    private static final String NAME_PART_REGEX = "[A-Za-z]*";
+    private static final String NAME_PART_REGEX = "([A-Z][a-z]+\\s?)+";
     private static final int USERNAME_MIN_CHARACTERS = 8;
     private static final int USERNAME_MAX_CHARACTERS = 16;
     private static final int NAME_PART_MIN_CHARACTERS = 1;
