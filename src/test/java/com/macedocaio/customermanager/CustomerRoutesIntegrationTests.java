@@ -11,7 +11,7 @@ import com.macedocaio.customermanager.exceptions.ErrorMessage;
 import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseException;
 import com.macedocaio.customermanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.customermanager.exceptions.customer.UsernameAlreadyInUseException;
-import com.macedocaio.customermanager.mocks.CustomerTestsUtils;
+import com.macedocaio.customermanager.mocks.CustomerEntityMock;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class CustomerRoutesIntegrationTests {
 
     @Test
     public void should_Call_Create_Single_Route() throws Exception {
-        CustomerEntity customer = CustomerTestsUtils.createJohnDoe();
+        CustomerEntity customer = CustomerEntityMock.createJohnDoe();
         createCustomerDto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
 
         MockHttpServletRequestBuilder builder = getCreateSingleRoute(createCustomerDto);
@@ -62,7 +62,7 @@ public class CustomerRoutesIntegrationTests {
 
     @Test
     public void should_Find_Single_By_ResourceId() throws Exception {
-        CustomerEntity customer = CustomerTestsUtils.createJohnDoe();
+        CustomerEntity customer = CustomerEntityMock.createJohnDoe();
         customer.setUsername("john_doe_002");
         customer.setCpf("95554736840");
 
@@ -83,7 +83,7 @@ public class CustomerRoutesIntegrationTests {
 
     @Test
     public void should_Update_Single_By_ResourceId() throws Exception {
-        CustomerEntity customer = CustomerTestsUtils.createJaneDoe();
+        CustomerEntity customer = CustomerEntityMock.createJaneDoe();
         createCustomerDto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
         PublicCustomerDto publicCustomer = createCustomerForTest();
 
@@ -101,7 +101,7 @@ public class CustomerRoutesIntegrationTests {
 
     @Test
     public void should_Delete_Single_By_ResourceId() throws Exception {
-        CustomerEntity customer = CustomerTestsUtils.createBabyDoe();
+        CustomerEntity customer = CustomerEntityMock.createBabyDoe();
         createCustomerDto = CustomerConverter.convertFromTo(customer, CreateCustomerDto.class);
         PublicCustomerDto publicCustomer = createCustomerForTest();
 
@@ -114,7 +114,7 @@ public class CustomerRoutesIntegrationTests {
 
     @Test
     public void should_Throw_Username_Already_In_Use_On_Find_Single_By_ResourceId_Route() throws Exception {
-        CustomerEntity customer = CustomerTestsUtils.createJaneDoe();
+        CustomerEntity customer = CustomerEntityMock.createJaneDoe();
         customer.setUsername("jane_doe_002");
         customer.setCpf("20169650880");
 
@@ -135,7 +135,7 @@ public class CustomerRoutesIntegrationTests {
 
     @Test
     public void should_Throw_Cpf_Already_In_Use_On_Find_Single_By_ResourceId_Route() throws Exception {
-        CustomerEntity customer = CustomerTestsUtils.createJaneDoe();
+        CustomerEntity customer = CustomerEntityMock.createJaneDoe();
         customer.setUsername("jane_doe_003");
         customer.setCpf("69917104828");
 

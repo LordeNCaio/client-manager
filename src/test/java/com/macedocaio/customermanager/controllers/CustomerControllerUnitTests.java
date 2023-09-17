@@ -5,7 +5,7 @@ import com.macedocaio.customermanager.dto.customer.CreateCustomerDto;
 import com.macedocaio.customermanager.dto.customer.PublicCustomerDto;
 import com.macedocaio.customermanager.dto.customer.UpdateCustomerDto;
 import com.macedocaio.customermanager.entities.CustomerEntity;
-import com.macedocaio.customermanager.mocks.CustomerTestsUtils;
+import com.macedocaio.customermanager.mocks.CustomerEntityMock;
 import com.macedocaio.customermanager.services.CustomerService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ public class CustomerControllerUnitTests {
 
     @BeforeAll
     public static void beforeAll() {
-        customer = CustomerTestsUtils.createJohnDoe();
+        customer = CustomerEntityMock.createJohnDoe();
     }
 
     @Test
@@ -66,8 +66,8 @@ public class CustomerControllerUnitTests {
 
     @Test
     public void should_Find_All() {
-        List<CustomerEntity> customers = Arrays.asList(CustomerTestsUtils.createJohnDoe(), CustomerTestsUtils.createJaneDoe(),
-                CustomerTestsUtils.createBabyDoe());
+        List<CustomerEntity> customers = Arrays.asList(CustomerEntityMock.createJohnDoe(), CustomerEntityMock.createJaneDoe(),
+                CustomerEntityMock.createBabyDoe());
 
         when(service.findAll()).thenReturn(customers);
         List<PublicCustomerDto> foundedCustomers = controller.findAll();

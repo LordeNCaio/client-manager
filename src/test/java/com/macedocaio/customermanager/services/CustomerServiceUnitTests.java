@@ -8,7 +8,7 @@ import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseExcepti
 import com.macedocaio.customermanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.customermanager.exceptions.customer.UsernameAlreadyInUseException;
 import com.macedocaio.customermanager.repositories.CustomerRepository;
-import com.macedocaio.customermanager.mocks.CustomerTestsUtils;
+import com.macedocaio.customermanager.mocks.CustomerEntityMock;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +43,7 @@ public class CustomerServiceUnitTests {
 
     @BeforeAll
     public static void beforeAll() {
-        customer = CustomerTestsUtils.createJohnDoe();
+        customer = CustomerEntityMock.createJohnDoe();
         resourceId = customer.getResourceId();
     }
 
@@ -69,8 +69,8 @@ public class CustomerServiceUnitTests {
 
     @Test
     public void should_Find_All() {
-        List<CustomerEntity> customers = Arrays.asList(CustomerTestsUtils.createJohnDoe(), CustomerTestsUtils.createJaneDoe(),
-                CustomerTestsUtils.createBabyDoe());
+        List<CustomerEntity> customers = Arrays.asList(CustomerEntityMock.createJohnDoe(), CustomerEntityMock.createJaneDoe(),
+                CustomerEntityMock.createBabyDoe());
 
         when(repository.findAll()).thenReturn(customers);
         List<CustomerEntity> foundedCustomers = service.findAll();

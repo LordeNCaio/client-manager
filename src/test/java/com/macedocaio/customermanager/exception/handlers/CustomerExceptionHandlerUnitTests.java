@@ -6,7 +6,7 @@ import com.macedocaio.customermanager.exceptions.customer.CpfAlreadyInUseExcepti
 import com.macedocaio.customermanager.exceptions.customer.CustomerNotFoundException;
 import com.macedocaio.customermanager.exceptions.customer.UsernameAlreadyInUseException;
 import com.macedocaio.customermanager.exceptions.handler.CustomerExceptionHandler;
-import com.macedocaio.customermanager.mocks.CustomerTestsUtils;
+import com.macedocaio.customermanager.mocks.CustomerEntityMock;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ public class CustomerExceptionHandlerUnitTests {
 
     @BeforeAll
     public static void beforeAll() {
-        customer = CustomerTestsUtils.createJohnDoe();
+        customer = CustomerEntityMock.createJohnDoe();
     }
 
     @Test

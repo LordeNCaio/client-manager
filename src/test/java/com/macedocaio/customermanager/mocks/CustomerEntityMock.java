@@ -5,7 +5,7 @@ import com.macedocaio.customermanager.entities.CustomerEntity;
 
 import java.time.LocalDate;
 
-public final class CustomerTestsUtils {
+public final class CustomerEntityMock {
 
     public static CustomerEntity createJohnDoe() {
         return CustomerBuilder.getBuilder()
