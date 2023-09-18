@@ -35,7 +35,7 @@ public class CustomerServiceUnitTests {
     private CustomerService service;
 
     @Mock
-    private CustomerRepository repository;
+    private static CustomerRepository repository;
 
     private static UUID resourceId;
 
@@ -45,6 +45,7 @@ public class CustomerServiceUnitTests {
     public static void beforeAll() {
         customer = CustomerEntityMock.createJohnDoe();
         resourceId = customer.getResourceId();
+
     }
 
     @Test
